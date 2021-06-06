@@ -1,30 +1,29 @@
 <template>
+
   <div class="root">
 
-    <div class="textArea">
+    
       <v-col  class="intenForm" cols="12" sm="6" md="3">
         <v-text-field
          
           label="Usuario"
           v-model="login"
         ></v-text-field>
-      </v-col>
-   
 
-   
-      <v-col  class="intenForm" cols="12" sm="6" md="3">
         <v-text-field
           label="Senha"
           v-model="senha"
         ></v-text-field>
-      </v-col>
-    </div>
 
-    <div class="buttonSubmit">
+        <div class="buttonSubmit">
       <v-btn @click="entrar()">Entrar</v-btn>
     </div>
+      </v-col>
+
+    
     
   </div>
+
 </template>
 
 <script>
@@ -36,19 +35,18 @@ export default {
   el: "#app",
   data() {
     return {
-      usuarios: [
-        { login: "lucas", senha: "1234" },
-        { login: "gabriel", senha: "1234" },
-      ],
-      // login: "",
-      // senha: "",
+      email:'lucas.chicoski@outlook.com',
+      nome:'Lucas',
+      
+      login: "",
+      senha: "",
     };
   },
   methods: {
     entrar() {
-      if (this.login == "lucas" && this.senha == "1234") {
+      if (this.login == this.email && this.senha == "1234") {
         alert("lucas acessou");
-        window.location.href = "http://localhost:8081/main";
+        window.location.href = "http://localhost:8083/main";
       } else if (this.login == "" || this.senha == "") {
         alert("preencha todos os campos");
       } else {
@@ -60,22 +58,20 @@ export default {
 </script>
 
 <style>
-.root {
-position: relative;
-margin-top: 10%;
-}
+
 
 .textArea{
-  background-color: blue;
+padding-top: 100px;
 }
 
 .intenForm{
-background-color: brown;
+  margin-top: 10%;
   margin-left: 38%;
+  background-color: white;
+  border-radius: 10px;
 }
 
 .buttonSubmit {
-  background: rosybrown;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -1,42 +1,134 @@
 <template>
-<div>
-<v-app>
-  <v-navigation-drawer app>
-    <!-- -->
-  </v-navigation-drawer>
+  <div id="root">
+    <div class="menu">
+      <v-navigation-drawer permanent>
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title class="text-h6">
+              Lucas Chicoski
+            </v-list-item-title>
+            <v-list-item-subtitle> Lucas </v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
 
-  <v-app-bar app>
-    <!-- -->
-  </v-app-bar>
+        <v-divider></v-divider>
 
-  <!-- Sizes your content based upon application components -->
-  <v-main>
+        <v-list dense nav>
+          <v-list-item v-for="(item, i) in items" :key="i" link>
+            <v-list-item-content>
+              <v-btn v-on:click="google(i)" elevation="2" rounded text tile>{{
+                item.title
+              }}</v-btn>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-navigation-drawer>
+    </div>
 
-    <!-- Provides the application the proper gutter -->
-    <v-container fluid>
+    <div id="showView">
+      <div class="rotina">
+        <p>Nome da Rotina</p>
+      </div>
 
-      <!-- If using vue-router -->
-      <router-view></router-view>
-    </v-container>
-  </v-main>
+      <div class="search">
+        <v-text-field
+          class="buttonSearch"
+          v-model="message2"
+          solo
+          label="Pesquisar"
+          clearable
+        ></v-text-field>
+      </div>
 
-  <v-footer app>
-    <!-- -->
-  </v-footer>
-</v-app>
-</div>
+      <div class="grid">
+        <p>Produtos cadastrados</p>
+
+        <v-container class="grey lighten-5">
+          <v-row class="mb-6" no-gutters>
+            <v-col v-for="n in grid" :key="n">
+              <v-card class="pa-2" tile outlined> {{ n.title }} </v-card>
+            </v-col>
+          </v-row>
+        </v-container>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-
-
+// height="550" width="256"
+//<v-list-item-title >{{item.title}}</v-list-item-title>
 export default {
-    
-}
+  data() {
+    return {
+      selecionado: 0,
+      selectedItem: 0,
+      grid: [
+        { title: " Empresa " },
+        { title: " Produto " },
+        { title: " Categoria " },
+        { title: " Cliente " },
+      ],
+      intensGrid: [],
+      items: [
+        { title: "Início" },
+        { title: "Cadastro de Empresa", icon: "" },
+        { title: "Cadastro de Produtos", icon: "" },
+        { title: "Cadastro de Clientes", icon: "" },
+      ],
 
+      right: null,
+    };
+  },
 
+  methods: {
+    google(index) {
+      if (index == 0) {
+        alert("Você clicou em inicio");
+      } else if (index == 1) {
+        alert("Cadastro de Empresa");
+      } else if (index == 2) {
+        alert("Cadastro de Produtos");
+      } else if (index == 3) {
+        alert("Cadastro de Clientes");
+      }
+    },
+  },
+};
 </script>
 
 <style>
+#root {
+  display: inline-flex;
+}
+.mx-auto {
+  width: 256px;
+  height: 97vh; /**vh = view port */
+}
 
+.menu {
+  margin: 10px;
+  width: 256px;
+  height: auto;
+}
+
+#showView {
+  margin: 10px;
+  width: 1000vh;
+  height: 97vh;
+  background-color: white;
+}
+
+.rotina {
+  background-color: yellow;
+}
+
+.buttonSearch {
+  width: 500px;
+}
+
+.grid {
+  background-color: yellow;
+  width: 15%;
+}
 </style>
