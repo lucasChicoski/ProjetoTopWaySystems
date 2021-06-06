@@ -46,7 +46,8 @@ export default {
     entrar() {
       if (this.login == this.email && this.senha == "1234") {
         alert("lucas acessou");
-        window.location.href = "http://localhost:8083/main";
+       // window.location.href = "http://localhost:8080/main";
+       this.$router.push('/main')
       } else if (this.login == "" || this.senha == "") {
         alert("preencha todos os campos");
       } else {
