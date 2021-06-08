@@ -27,14 +27,14 @@
       </div>
 
       <div id="showView">
-        <div class="rotina">
-          <p>Nome da Rotina</p>
+        <div v-for="(rotinas , indexs) in rotina" :key="indexs" class="rotina">
+          <p v-if="indexs == '0'">{{rotinas.rotina}}</p>
         </div>
 
         <div class="search">
           <v-text-field
             class="buttonSearch"
-            v-model="message2"
+            
             solo
             label="Pesquisar"
             clearable
@@ -42,20 +42,25 @@
         </div>
 
         <div class="grid">
-          <v-container class="grey lighten-5">
-            <v-row  :class="k === 1 ? 'mb-6' : ''" no-gutters>
-            
-              <v-col v-for="n in grid" :key="n">
-                <v-card class="pa-2" outlined tile>
-                  {{ n.title }}
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-container>
+          <table>
+            <thead>
+              <tr v-for="n in grid" :key="n">
+                <th>{{ n.tipo }}</th>
+                <th>{{ n.cnpjcpf }}</th>
+                <th>{{ n.nome }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="cliente in clientes" :key="cliente">
+                <td>{{ cliente.tipocliente }}</td>
+                <td>{{ cliente.identificationcliente }}</td>
+                <td>{{ cliente.nomecliente}}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
         <div class="actions">
-
           <div class="cadastro">
             <v-row justify="center">
               <v-dialog v-model="dialog" persistent max-width="600px">
@@ -65,7 +70,6 @@
                   </v-btn>
                 </template>
                 <v-card>
-
                   <v-card-title>
                     <span class="text-h5">Cadastrar Cliente</span>
                   </v-card-title>
@@ -74,29 +78,32 @@
                     <v-container>
                       <v-row>
                         <v-col cols="12" sm="6" md="4">
-                          <v-text-field v-model="tipo"
+                          <v-text-field 
+                            v-model="tipocliente"
                             label="Tipo de Cliente*"
                             hint="Juridica ou Fisica"
                             persistent-hint
-                            required
+                            
                           ></v-text-field>
                         </v-col>
 
                         <v-col cols="12" sm="6" md="4">
                           <v-text-field
+                           v-model="identificationcliente"
                             label="CPF/CNPJ*"
                             hint="Com pontuação"
                             persistent-hint
-                            required
+                            
                           ></v-text-field>
                         </v-col>
 
                         <v-col cols="12" sm="6" md="4">
                           <v-text-field
+                          v-model="nomecliente"
                             label="Nome*"
                             hint="Nome completo"
                             persistent-hint
-                            required
+                            
                           ></v-text-field>
                         </v-col>
                       </v-row>
@@ -110,7 +117,7 @@
                       Fechar
                     </v-btn>
 
-                    <v-btn color="blue darken-1" text @click="dialog = false">
+                    <v-btn color="blue darken-1" text @click="metodoAddArray()">
                       Salvar
                     </v-btn>
                   </v-card-actions>
@@ -119,14 +126,13 @@
             </v-row>
           </div>
 
-
           <div class="buttonsexcludeandupdate">
-          <div class="excluir">
-            <v-btn color="error"  elevation="2" raised>Excluir</v-btn>
-          </div>
-           <div class="Editar">
-            <v-btn color="success"  elevation="2" raised>Editar</v-btn>
-          </div>
+            <div class="excluir">
+              <v-btn color="error" elevation="2" raised>Excluir</v-btn>
+            </div>
+            <div class="Editar">
+              <v-btn color="success" elevation="2" raised>Editar</v-btn>
+            </div>
           </div>
         </div>
       </div>
@@ -142,33 +148,27 @@ export default {
     return {
       selecionado: 0,
       selectedItem: 0,
-      alignments: ["start"],
+      
+     tipocliente1:'',
+identificationcliente1:'',
+nomecliente1:'',
 
-      grid: [
-        { title: " Tipo de cliente " },
-        { title: " CNPJ/CPF " },
-        { title: " Nome " },
-        
-      ],
-
-      intensGrid: [{tipo:"Fisica"},{CNPJ:'123123'},{nome:'Lucas'}],
+      grid: [{ tipo: " Tipo de cliente ", cnpjcpf: "CNPJ/CPF", nome: "Nome" }],
 
       items: [
         { title: "Início" },
         { title: "Cadastro de Empresa", icon: "" },
         { title: "Cadastro de Produtos", icon: "" },
         { title: "Cadastro de Clientes", icon: "" },
+        {title: "Sair"}
       ],
-
-      tipo:'',
-      numeroprivado:'',
-      nomeCliente:'',
 
       right: null,
       dialog: false,
     };
   },
-
+  
+  
   methods: {
     google(index) {
       if (index == 0) {
@@ -180,12 +180,38 @@ export default {
       } else if (index == 3) {
         //window.location.href = "http://localhost:8080/cadastroclientes";
         this.$router.push("/cadastroclientes");
+      }else if( index == 4){
+        this.$router.push("/")
       }
     },
+    metodoAddArray(){
+        const usuario ={
 
-    
+        tipocliente:this.tipocliente,
+        identificationcliente:this.identificationcliente,
+        nomecliente:this.nomecliente
+
+        }
+
+        this.$store.state.clientes.push(usuario)
+        this.dialog = false
+        console.log(this.$store.state.clientes)
+        
+    }
+  },
+  
+  computed: {
+    clientes(){
+      return this.$store.state.clientes;
+    },
+    rotina(){
+      return this.$store.state.rotina;
+    }
   },
 };
+
+
+
 </script>
 
 <style>
@@ -222,20 +248,19 @@ export default {
   background-color: yellow;
 }
 
-.actions{
+.actions {
   display: inline-flex;
   padding: 10%;
 }
 
-.excluir{
-margin-left: 20px;
+.excluir {
+  margin-left: 20px;
   margin-right: 20px;
 }
 
-.buttonsexcludeandupdate{
-display: inline-flex;
-  
+.buttonsexcludeandupdate {
+  display: inline-flex;
+
   margin-top: -12px;
 }
-
 </style>

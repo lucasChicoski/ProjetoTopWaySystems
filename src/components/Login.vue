@@ -1,5 +1,5 @@
 <template>
-
+<v-app>
   <div class="root">
 
     
@@ -23,7 +23,7 @@
     
     
   </div>
-
+</v-app>
 </template>
 
 <script>
@@ -55,6 +55,13 @@ export default {
       }
     },
   },
+
+  computed:{
+    rotina(){
+      return this.$store.state.rotina
+    }
+    
+  }
 };
 </script>
 
