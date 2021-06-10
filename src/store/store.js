@@ -12,6 +12,12 @@ export default new Vuex.Store({
         rotina:[
             {rotina:'Cadastro de Clientes'},
             {rotina:'Página Principal'}
-        ]
+        ],
+
+        usuario:{
+            Nome:'',
+            Email:''
+        }
+
     }
 })

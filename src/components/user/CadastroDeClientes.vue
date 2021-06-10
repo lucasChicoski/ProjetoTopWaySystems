@@ -6,9 +6,9 @@
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title class="text-h6">
-                Lucas Chicoski
+                {{usuarios}}
               </v-list-item-title>
-              <v-list-item-subtitle> Lucas </v-list-item-subtitle>
+              <v-list-item-subtitle> {{email}} </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
 
@@ -149,9 +149,9 @@ export default {
       selecionado: 0,
       selectedItem: 0,
       
-     tipocliente1:'',
-identificationcliente1:'',
-nomecliente1:'',
+     tipocliente:'',
+identificationcliente:'',
+nomecliente:'',
 
       grid: [{ tipo: " Tipo de cliente ", cnpjcpf: "CNPJ/CPF", nome: "Nome" }],
 
@@ -163,6 +163,7 @@ nomecliente1:'',
         {title: "Sair"}
       ],
 
+    
       right: null,
       dialog: false,
     };
@@ -206,7 +207,14 @@ nomecliente1:'',
     },
     rotina(){
       return this.$store.state.rotina;
+    },
+     usuarios(){
+      return this.$store.state.usuario.Nome
+    },
+    email(){
+      return this.$store.state.usuario.Email
     }
+    
   },
 };
 
