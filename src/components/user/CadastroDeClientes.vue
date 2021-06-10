@@ -6,9 +6,9 @@
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title class="text-h6">
-                {{usuarios}}
+                {{ usuarios }}
               </v-list-item-title>
-              <v-list-item-subtitle> {{email}} </v-list-item-subtitle>
+              <v-list-item-subtitle> {{ email }} </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
 
@@ -27,14 +27,13 @@
       </div>
 
       <div id="showView">
-        <div v-for="(rotinas , indexs) in rotina" :key="indexs" class="rotina">
-          <p v-if="indexs == '0'">{{rotinas.rotina}}</p>
+        <div v-for="(rotinas, indexs) in rotina" :key="indexs" class="rotina">
+          <p v-if="indexs == '0'">{{ rotinas.rotina }}</p>
         </div>
 
         <div class="search">
           <v-text-field
             class="buttonSearch"
-            
             solo
             label="Pesquisar"
             clearable
@@ -45,16 +44,18 @@
           <table>
             <thead>
               <tr v-for="n in grid" :key="n">
+                <th>{{ n.id }}</th>
                 <th>{{ n.tipo }}</th>
                 <th>{{ n.cnpjcpf }}</th>
                 <th>{{ n.nome }}</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="cliente in clientes" :key="cliente">
+              <tr v-for="(cliente,i) in clientes" :key="i">
+                <td>{{ i+1 }}</td>
                 <td>{{ cliente.tipocliente }}</td>
                 <td>{{ cliente.identificationcliente }}</td>
-                <td>{{ cliente.nomecliente}}</td>
+                <td>{{ cliente.nomecliente }}</td>
               </tr>
             </tbody>
           </table>
@@ -78,32 +79,29 @@
                     <v-container>
                       <v-row>
                         <v-col cols="12" sm="6" md="4">
-                          <v-text-field 
+                          <v-text-field
                             v-model="tipocliente"
                             label="Tipo de Cliente*"
                             hint="Juridica ou Fisica"
                             persistent-hint
-                            
                           ></v-text-field>
                         </v-col>
 
                         <v-col cols="12" sm="6" md="4">
                           <v-text-field
-                           v-model="identificationcliente"
+                            v-model="identificationcliente"
                             label="CPF/CNPJ*"
                             hint="Com pontuação"
                             persistent-hint
-                            
                           ></v-text-field>
                         </v-col>
 
                         <v-col cols="12" sm="6" md="4">
                           <v-text-field
-                          v-model="nomecliente"
+                            v-model="nomecliente"
                             label="Nome*"
                             hint="Nome completo"
                             persistent-hint
-                            
                           ></v-text-field>
                         </v-col>
                       </v-row>
@@ -126,9 +124,44 @@
             </v-row>
           </div>
 
+
+<!--                    Botão Excluir    -->
+
           <div class="buttonsexcludeandupdate">
             <div class="excluir">
-              <v-btn color="error" elevation="2" raised>Excluir</v-btn>
+              <v-row justify="center">
+                <v-dialog v-model="dialog2" persistent max-width="290">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn color="error" dark v-bind="attrs" v-on="on">
+                      Excluir
+                    </v-btn>
+                  </template>
+                  <v-card>
+                    <v-card-title class="text-h5">
+                      Digite o Id que deseja excluir
+                    </v-card-title>
+                    <v-text-field v-model="functionDelete" label="ID" solo dense></v-text-field>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn
+                        color="green darken-1"
+                        text
+                        @click="dialog2 = false"
+                      >
+                        Cancelar
+                      </v-btn>
+                      <v-btn
+                        v-on:click="excluir()"
+                        color="green darken-1"
+                        text
+                        @click="dialog2 = false"
+                      >
+                        Excluir
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </v-row>
             </div>
             <div class="Editar">
               <v-btn color="success" elevation="2" raised>Editar</v-btn>
@@ -146,30 +179,38 @@
 export default {
   data() {
     return {
-      selecionado: 0,
-      selectedItem: 0,
-      
-     tipocliente:'',
-identificationcliente:'',
-nomecliente:'',
+      // selecionado: 0,
+      // selectedItem: 0,
+      count: -1,
 
-      grid: [{ tipo: " Tipo de cliente ", cnpjcpf: "CNPJ/CPF", nome: "Nome" }],
+      tipocliente: "",
+      identificationcliente: "",
+      nomecliente: "",
+      functionDelete:'',
+
+      grid: [
+        {
+          id: "Id",
+          tipo: " Tipo de cliente ",
+          cnpjcpf: "CNPJ/CPF",
+          nome: "Nome",
+        },
+      ],
 
       items: [
         { title: "Início" },
         { title: "Cadastro de Empresa", icon: "" },
         { title: "Cadastro de Produtos", icon: "" },
         { title: "Cadastro de Clientes", icon: "" },
-        {title: "Sair"}
+        { title: "Sair" },
       ],
 
-    
       right: null,
       dialog: false,
+      dialog2: false,
     };
   },
-  
-  
+
   methods: {
     google(index) {
       if (index == 0) {
@@ -181,45 +222,48 @@ nomecliente:'',
       } else if (index == 3) {
         //window.location.href = "http://localhost:8080/cadastroclientes";
         this.$router.push("/cadastroclientes");
-      }else if( index == 4){
-        this.$router.push("/")
+      } else if (index == 4) {
+        this.$router.push("/");
       }
     },
-    metodoAddArray(){
-        const usuario ={
+    metodoAddArray() {
+      const usuario = {
+        id: (this.count = this.count + 1),
+        tipocliente: this.tipocliente,
+        identificationcliente: this.identificationcliente,
+        nomecliente: this.nomecliente,
+      };
 
-        tipocliente:this.tipocliente,
-        identificationcliente:this.identificationcliente,
-        nomecliente:this.nomecliente
+      this.$store.state.clientes.push(usuario);
+      this.dialog = false;
 
-        }
-
-        this.$store.state.clientes.push(usuario)
-        this.dialog = false
-        console.log(this.$store.state.clientes)
-        
+      this.tipocliente = "";
+      this.identificationcliente = "";
+      this.nomecliente = "";
+      console.log(this.$store.state.clientes);
+    },
+    
+    excluir(){
+      //melhorar a lógica
+     this.$store.state.clientes.splice(this.functionDelete - 1,1) 
     }
   },
-  
+
   computed: {
-    clientes(){
+    clientes() {
       return this.$store.state.clientes;
     },
-    rotina(){
+    rotina() {
       return this.$store.state.rotina;
     },
-     usuarios(){
-      return this.$store.state.usuario.Nome
+    usuarios() {
+      return this.$store.state.usuario.Nome;
     },
-    email(){
-      return this.$store.state.usuario.Email
-    }
-    
+    email() {
+      return this.$store.state.usuario.Email;
+    },
   },
 };
-
-
-
 </script>
 
 <style>
