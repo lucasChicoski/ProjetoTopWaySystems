@@ -17,9 +17,14 @@
           <v-list dense nav>
             <v-list-item v-for="(item, i) in items" :key="i" link>
               <v-list-item-content>
-                <v-btn v-on:click="google(i)" elevation="2" rounded text tile>{{
-                  item.title
-                }}</v-btn>
+                <v-btn
+                  v-on:click="navigation(i)"
+                  elevation="2"
+                  rounded
+                  text
+                  tile
+                  >{{ item.title }}</v-btn
+                >
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -51,8 +56,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(cliente,i) in clientes" :key="i">
-                <td>{{ i+1 }}</td>
+              <tr v-for="(cliente, i) in clientes" :key="i">
+                <td>{{ cliente.id }}</td>
                 <td>{{ cliente.tipocliente }}</td>
                 <td>{{ cliente.identificationcliente }}</td>
                 <td>{{ cliente.nomecliente }}</td>
@@ -115,7 +120,7 @@
                       Fechar
                     </v-btn>
 
-                    <v-btn color="blue darken-1" text @click="metodoAddArray()">
+                    <v-btn color="blue darken-1" text @click="cadastrar()">
                       Salvar
                     </v-btn>
                   </v-card-actions>
@@ -124,13 +129,12 @@
             </v-row>
           </div>
 
-
-<!--                    Botão Excluir    -->
+          <!--                    Botão Excluir    -->
 
           <div class="buttonsexcludeandupdate">
             <div class="excluir">
               <v-row justify="center">
-                <v-dialog v-model="dialog2" persistent max-width="290">
+                <v-dialog v-model="dialogExcluir" persistent max-width="290">
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn color="error" dark v-bind="attrs" v-on="on">
                       Excluir
@@ -140,13 +144,18 @@
                     <v-card-title class="text-h5">
                       Digite o Id que deseja excluir
                     </v-card-title>
-                    <v-text-field v-model="functionDelete" label="ID" solo dense></v-text-field>
+                    <v-text-field
+                      v-model="functionDelete"
+                      label="ID"
+                      solo
+                      dense
+                    ></v-text-field>
                     <v-card-actions>
                       <v-spacer></v-spacer>
                       <v-btn
                         color="green darken-1"
                         text
-                        @click="dialog2 = false"
+                        @click="dialogExcluir = false"
                       >
                         Cancelar
                       </v-btn>
@@ -154,7 +163,7 @@
                         v-on:click="excluir()"
                         color="green darken-1"
                         text
-                        @click="dialog2 = false"
+                        @click="dialogExcluir = false"
                       >
                         Excluir
                       </v-btn>
@@ -163,8 +172,84 @@
                 </v-dialog>
               </v-row>
             </div>
+
+
+<!--Editar usuario-->
+
+
             <div class="Editar">
-              <v-btn color="success" elevation="2" raised>Editar</v-btn>
+              <v-row justify="center">
+                <v-dialog v-model="dialogEditar" persistent max-width="600px">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn color="primary" dark v-bind="attrs" v-on="on">
+                      Editar
+                    </v-btn>
+                  </template>
+                  <v-card>
+                    <v-card-title>
+                      <span class="text-h5">Editar Clientes</span>
+                    </v-card-title>
+
+                    <v-card-text>
+                      <v-container>
+                        <v-row>
+
+                         <v-col cols="12" sm="6" md="4">
+                            <v-text-field
+                              v-model="idEditar"
+                              label="Id*"
+                              persistent-hint
+                            ></v-text-field>
+                          </v-col>
+
+                          <v-col cols="12" sm="6" md="4">
+                            <v-text-field
+                              v-model="tipoEditar"
+                              label="Tipo de Cliente"
+                              hint="Juridica ou Fisica"
+                              persistent-hint
+                            ></v-text-field>
+                          </v-col>
+
+                          <v-col cols="12" sm="6" md="4">
+                            <v-text-field
+                              v-model="numeroIdentification"
+                              label="CPF/CNPJ"
+                              hint="Com pontuação"
+                              persistent-hint
+                            ></v-text-field>
+                          </v-col>
+
+                          <v-col cols="12" sm="6" md="4">
+                            <v-text-field
+                              v-model="nomeEditar"
+                              label="Nome"
+                              hint="Nome completo"
+                              persistent-hint
+                            ></v-text-field>
+                          </v-col>
+                        </v-row>
+                      </v-container>
+                      <small>*Campos nescessários</small>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+
+                      <v-btn
+                        color="blue darken-1"
+                        text
+                        @click="dialogEditar = false"
+                      >
+                        Fechar
+                      </v-btn>
+
+                      <v-btn color="blue darken-1" text  v-on:click="editar()">
+                        Salvar
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </v-row>
             </div>
           </div>
         </div>
@@ -174,19 +259,17 @@
 </template>
 
 <script>
-// height="550" width="256"
-//<v-list-item-title >{{item.title}}</v-list-item-title>
+
 export default {
   data() {
     return {
-      // selecionado: 0,
-      // selectedItem: 0,
-      count: -1,
+     
+      count: 0,
 
       tipocliente: "",
       identificationcliente: "",
       nomecliente: "",
-      functionDelete:'',
+      functionDelete: "",
 
       grid: [
         {
@@ -204,15 +287,21 @@ export default {
         { title: "Cadastro de Clientes", icon: "" },
         { title: "Sair" },
       ],
-
+//--------------EDITAR--------------------------------------------------
+idEditar:'',
+nomeEditar:'',
+tipoEditar:'',
+numeroIdentification:'',
+//----------------------------------------------------------------------
       right: null,
       dialog: false,
-      dialog2: false,
+      dialogExcluir: false,
+      dialogEditar: false,
     };
   },
 
   methods: {
-    google(index) {
+    navigation(index) {
       if (index == 0) {
         this.$router.push("/main");
       } else if (index == 1) {
@@ -226,7 +315,7 @@ export default {
         this.$router.push("/");
       }
     },
-    metodoAddArray() {
+    cadastrar() {
       const usuario = {
         id: (this.count = this.count + 1),
         tipocliente: this.tipocliente,
@@ -242,11 +331,34 @@ export default {
       this.nomecliente = "";
       console.log(this.$store.state.clientes);
     },
-    
-    excluir(){
-      //melhorar a lógica
-     this.$store.state.clientes.splice(this.functionDelete - 1,1) 
-    }
+
+    excluir() {
+  
+      for (var array = 0; array <= this.clientes.length; array++) {
+        if (this.clientes[array].id == this.functionDelete) {
+          var index = this.clientes.indexOf(this.clientes[array]);
+          this.$store.state.clientes.splice(index, 1);
+          this.functionDelete = "";
+        }
+      }
+    },
+
+    editar() {
+      
+      for(var array = 0; array<= this.clientes.length; array++){
+         
+        if(this.idEditar == this.clientes[array].id){
+          alert('123')
+           this.$store.state.clientes[array].tipocliente = this.tipoEditar;
+            this.$store.state.clientes[array].identificationcliente = this.numeroIdentification
+            this.$store.state.clientes[array].nomecliente = this.nomeEditar
+            this.dialogEditar = false
+
+        }
+         
+      }
+       
+    },
   },
 
   computed: {
