@@ -33,7 +33,7 @@
 
       <div id="showView">
         <div v-for="(rotinas, indexs) in rotina" :key="indexs" class="rotina">
-          <p v-if="indexs == '0'">{{ rotinas.rotina }}</p>
+          <h1 v-if="indexs == '0'">{{ rotinas.rotina }}</h1>
         </div>
 
         <!--Área de Pesquisa-->
@@ -49,7 +49,7 @@
           </div>
 
           <div class="botoes">
-            <v-btn class="btn1" elevation="2" @click="pesquisar(1)"
+            <v-btn class="btn2" width="170" elevation="2" @click="pesquisar()"
               >Pesquisar</v-btn
             >
             <v-btn class="btn1" elevation="2" @click="flagClearSearch = 0"
@@ -61,11 +61,14 @@
         <div class="grid">
           <table>
             <thead>
-              <tr v-for="n in grid" :key="n">
+              <tr class="meio" v-for="n in grid" :key="n">
                 <th>{{ n.id }}</th>
                 <th>{{ n.tipo }}</th>
                 <th>{{ n.cnpjcpf }}</th>
                 <th>{{ n.nome }}</th>
+                <th>{{ n.endereco }}</th>
+                <th>{{ n.cidade }}</th>
+                <th>{{ n.estado }}</th>
               </tr>
             </thead>
             <tbody>
@@ -75,22 +78,29 @@
                 <td v-if="flagClearSearch == 0">
                   {{ cliente.identificationcliente }}
                 </td>
-                
-
                 <td v-if="flagClearSearch == 0">{{ cliente.nomecliente }}</td>
-                
+                <td v-if="flagClearSearch == 0">
+                  {{ cliente.enderecoCliente }}
+                </td>
+                <td v-if="flagClearSearch == 0">{{ cliente.cidadeCliente }}</td>
+                <td v-if="flagClearSearch == 0">{{ cliente.estadoCliente }}</td>
               </tr>
-<!---->
-              <tr v-for="(cliente, i) in resultSearch" :key="i">            
-                <td v-if="flagClearSearch == 1">{{cliente.id}}</td>       
-                <td v-if="flagClearSearch == 1">{{cliente.tipo}}</td>               
-                <td v-if="flagClearSearch == 1">{{cliente.identificador}}</td>              
-                <td v-if="flagClearSearch == 1">{{cliente.nome}}</td>
+              <!--Else da pesquisa-->
+              <tr v-for="(cliente, i) in resultSearch" :key="i">
+                <td v-if="flagClearSearch == 1">{{ cliente.id }}</td>
+                <td v-if="flagClearSearch == 1">{{ cliente.tipo }}</td>
+                <td v-if="flagClearSearch == 1">{{ cliente.identificador }}</td>
+                <td v-if="flagClearSearch == 1">{{ cliente.nome }}</td>
+                <td v-if="flagClearSearch == 1">
+                  {{ cliente.endereco }}
+                </td>
+                <td v-if="flagClearSearch == 1">{{ cliente.cidade }}</td>
+                <td v-if="flagClearSearch == 1">{{ cliente.estado }}</td>
               </tr>
-              
             </tbody>
           </table>
         </div>
+        <!--Cadastrar-->
 
         <div class="actions">
           <div class="cadastro">
@@ -132,6 +142,31 @@
                             v-model="nomecliente"
                             label="Nome*"
                             hint="Nome completo"
+                            persistent-hint
+                          ></v-text-field>
+                        </v-col>
+
+                        <v-col cols="12" sm="6" md="4">
+                          <v-text-field
+                            v-model="enderecoCliente"
+                            label="Endereço*"
+                            hint="Nome da logradouro"
+                            persistent-hint
+                          ></v-text-field>
+                        </v-col>
+
+                        <v-col cols="12" sm="6" md="4">
+                          <v-text-field
+                            v-model="cidadeCliente"
+                            label="Cidade*"
+                            persistent-hint
+                          ></v-text-field>
+                        </v-col>
+
+                        <v-col cols="12" sm="6" md="4">
+                          <v-text-field
+                            v-model="estadoCliente"
+                            label="Estado*"
                             persistent-hint
                           ></v-text-field>
                         </v-col>
@@ -251,6 +286,31 @@
                               persistent-hint
                             ></v-text-field>
                           </v-col>
+
+                          <v-col cols="12" sm="6" md="4">
+                            <v-text-field
+                              v-model="enderecoEditar"
+                              label="Endereço"
+                              hint="Logradouro"
+                              persistent-hint
+                            ></v-text-field>
+                          </v-col>
+
+                          <v-col cols="12" sm="6" md="4">
+                            <v-text-field
+                              v-model="cidadeEditar"
+                              label="Cidade"
+                              persistent-hint
+                            ></v-text-field>
+                          </v-col>
+
+                          <v-col cols="12" sm="6" md="4">
+                            <v-text-field
+                              v-model="estadoEditar"
+                              label="Estado"
+                              persistent-hint
+                            ></v-text-field>
+                          </v-col>
                         </v-row>
                       </v-container>
                       <small>*Campos nescessários</small>
@@ -291,6 +351,11 @@ export default {
       tipocliente: "",
       identificationcliente: "",
       nomecliente: "",
+      enderecoCliente: "",
+      cidadeCliente: "",
+      estadoCliente: "",
+
+      //--------------------Método Delete
       functionDelete: "",
 
       //--------------Cabeçalho do Grid--------------------------------------------------
@@ -300,6 +365,9 @@ export default {
           tipo: " Tipo de cliente ",
           cnpjcpf: "CNPJ/CPF",
           nome: "Nome",
+          endereco: "Endereço",
+          cidade: "Cidade",
+          estado: "Estado",
         },
       ],
       //--------------Itens do Menu--------------------------------------------------
@@ -321,6 +389,9 @@ export default {
       nomeEditar: "",
       tipoEditar: "",
       numeroIdentification: "",
+      enderecoEditar: "",
+      cidadeEditar: "",
+      estadoEditar: "",
       //----------------------------------------------------------------------
       right: null,
       dialog: false,
@@ -350,6 +421,9 @@ export default {
         tipocliente: this.tipocliente,
         identificationcliente: this.identificationcliente,
         nomecliente: this.nomecliente,
+        enderecoCliente: this.enderecoCliente,
+        cidadeCliente: this.cidadeCliente,
+        estadoCliente: this.estadoCliente,
       };
 
       this.$store.state.clientes.push(usuario);
@@ -358,6 +432,10 @@ export default {
       this.tipocliente = "";
       this.identificationcliente = "";
       this.nomecliente = "";
+      (this.enderecoCliente = ""),
+        (this.cidadeCliente = ""),
+        (this.estadoCliente = "");
+
       console.log(this.$store.state.clientes);
     },
 
@@ -378,31 +456,40 @@ export default {
           this.$store.state.clientes[array].identificationcliente =
             this.numeroIdentification;
           this.$store.state.clientes[array].nomecliente = this.nomeEditar;
+          this.$store.state.clientes[array].enderecoCliente =
+            this.enderecoEditar;
+          this.$store.state.clientes[array].cidadeCliente = this.cidadeEditar;
+          this.$store.state.clientes[array].estadoCliente = this.estadoEditar;
+
           this.dialogEditar = false;
         }
       }
     },
 
     pesquisar() {
-
       this.resultSearch = [];
 
       for (var array = 0; array <= this.clientes.length; array++) {
         if (
           this.textoPesquisa == this.clientes[array].tipocliente ||
           this.textoPesquisa == this.clientes[array].identificationcliente ||
-          this.textoPesquisa == this.clientes[array].nomecliente
+          this.textoPesquisa == this.clientes[array].nomecliente ||
+          this.textoPesquisa == this.clientes[array].enderecoCliente ||
+          this.textoPesquisa == this.clientes[array].cidadeCliente ||
+          this.textoPesquisa == this.clientes[array].estadoCliente
         ) {
           this.flagClearSearch = 1;
 
-          const values ={
-            id:this.clientes[array].id,
-            tipo:this.clientes[array].tipocliente,
-            identificador:this.clientes[array].identificationcliente,
-            nome:this.clientes[array].nomecliente,
-          }
-           this.resultSearch.push(values)
-
+          const values = {
+            id: this.clientes[array].id,
+            tipo: this.clientes[array].tipocliente,
+            identificador: this.clientes[array].identificationcliente,
+            nome: this.clientes[array].nomecliente,
+            endereco: this.clientes[array].enderecoCliente,
+            cidade: this.clientes[array].cidadeCliente,
+            estado: this.clientes[array].estadoCliente,
+          };
+          this.resultSearch.push(values);
         }
       }
     },
@@ -433,7 +520,15 @@ export default {
   width: 256px;
   height: 97vh; /**vh = view port */
 }
-
+.actions {
+  margin-top: 10%;
+  margin-left: 25%;
+  display: inline-flex;
+}
+.excluir{
+padding-left: 10px;
+padding-right: 10px;
+}
 .menu {
   margin: 10px;
   width: 256px;
@@ -448,20 +543,12 @@ export default {
 }
 
 .rotina {
-  background-color: yellow;
-}
-
-.buttonSearch {
-  width: 500px;
+  background-color: white;
 }
 
 .grid {
-  background-color: yellow;
-}
-
-.actions {
-  display: inline-flex;
-  padding: 10%;
+  background-color: rgb(233, 233, 207);
+  border-radius: 10px;
 }
 
 .excluir {
@@ -471,13 +558,29 @@ export default {
 
 .buttonsexcludeandupdate {
   display: inline-flex;
-
-  margin-top: -12px;
+  margin-top: 0px;
 }
 .search {
   display: inline-flex;
 }
 .btn1 {
   display: block;
+  margin-top: 5%;
+}
+.btn2 {
+  height: 20px;
+}
+
+.searcharea {
+  margin-right: 5%;
+  margin-top: 10px;
+}
+
+th {
+  padding-left: 60px;
+}
+td {
+  text-align: center;
+  padding-left: 60px;
 }
 </style>
