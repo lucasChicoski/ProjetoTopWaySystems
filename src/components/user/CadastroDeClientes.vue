@@ -36,15 +36,28 @@
           <p v-if="indexs == '0'">{{ rotinas.rotina }}</p>
         </div>
 
+        <!--Área de Pesquisa-->
         <div class="search">
-          <v-text-field
-            class="buttonSearch"
-            solo
-            label="Pesquisar"
-            clearable
-          ></v-text-field>
-        </div>
+          <div class="searcharea">
+            <v-text-field
+              v-model="textoPesquisa"
+              class="buttonSearch"
+              solo
+              label="Pesquisar"
+              clearable
+            ></v-text-field>
+          </div>
 
+          <div class="botoes">
+            <v-btn class="btn1" elevation="2" @click="pesquisar(1)"
+              >Pesquisar</v-btn
+            >
+            <v-btn class="btn1" elevation="2" @click="flagClearSearch = 0"
+              >Limpar Pesquisa</v-btn
+            >
+          </div>
+        </div>
+        <!--GRID-->
         <div class="grid">
           <table>
             <thead>
@@ -57,11 +70,24 @@
             </thead>
             <tbody>
               <tr v-for="(cliente, i) in clientes" :key="i">
-                <td>{{ cliente.id }}</td>
-                <td>{{ cliente.tipocliente }}</td>
-                <td>{{ cliente.identificationcliente }}</td>
-                <td>{{ cliente.nomecliente }}</td>
+                <td v-if="flagClearSearch == 0">{{ cliente.id }}</td>
+                <td v-if="flagClearSearch == 0">{{ cliente.tipocliente }}</td>
+                <td v-if="flagClearSearch == 0">
+                  {{ cliente.identificationcliente }}
+                </td>
+                
+
+                <td v-if="flagClearSearch == 0">{{ cliente.nomecliente }}</td>
+                
               </tr>
+<!---->
+              <tr v-for="(cliente, i) in resultSearch" :key="i">            
+                <td v-if="flagClearSearch == 1">{{cliente.id}}</td>       
+                <td v-if="flagClearSearch == 1">{{cliente.tipo}}</td>               
+                <td v-if="flagClearSearch == 1">{{cliente.identificador}}</td>              
+                <td v-if="flagClearSearch == 1">{{cliente.nome}}</td>
+              </tr>
+              
             </tbody>
           </table>
         </div>
@@ -173,9 +199,7 @@
               </v-row>
             </div>
 
-
-<!--Editar usuario-->
-
+            <!--Editar usuario-->
 
             <div class="Editar">
               <v-row justify="center">
@@ -193,8 +217,7 @@
                     <v-card-text>
                       <v-container>
                         <v-row>
-
-                         <v-col cols="12" sm="6" md="4">
+                          <v-col cols="12" sm="6" md="4">
                             <v-text-field
                               v-model="idEditar"
                               label="Id*"
@@ -243,7 +266,7 @@
                         Fechar
                       </v-btn>
 
-                      <v-btn color="blue darken-1" text  v-on:click="editar()">
+                      <v-btn color="blue darken-1" text v-on:click="editar()">
                         Salvar
                       </v-btn>
                     </v-card-actions>
@@ -259,18 +282,18 @@
 </template>
 
 <script>
-
 export default {
   data() {
     return {
-     
-      count: 0,
+      count: 0, //contador de ID
 
+      //--------------Variáveis método Cadastrar--------------------------------------------------
       tipocliente: "",
       identificationcliente: "",
       nomecliente: "",
       functionDelete: "",
 
+      //--------------Cabeçalho do Grid--------------------------------------------------
       grid: [
         {
           id: "Id",
@@ -279,7 +302,7 @@ export default {
           nome: "Nome",
         },
       ],
-
+      //--------------Itens do Menu--------------------------------------------------
       items: [
         { title: "Início" },
         { title: "Cadastro de Empresa", icon: "" },
@@ -287,12 +310,18 @@ export default {
         { title: "Cadastro de Clientes", icon: "" },
         { title: "Sair" },
       ],
-//--------------EDITAR--------------------------------------------------
-idEditar:'',
-nomeEditar:'',
-tipoEditar:'',
-numeroIdentification:'',
-//----------------------------------------------------------------------
+      //--------------PESQUISA--------------------------------------------------
+      textoPesquisa: "",
+      flagClearSearch: 0,
+      resultSearch: [],
+      //----------------------------------------------------------------------
+
+      //--------------EDITAR--------------------------------------------------
+      idEditar: "",
+      nomeEditar: "",
+      tipoEditar: "",
+      numeroIdentification: "",
+      //----------------------------------------------------------------------
       right: null,
       dialog: false,
       dialogExcluir: false,
@@ -333,7 +362,6 @@ numeroIdentification:'',
     },
 
     excluir() {
-  
       for (var array = 0; array <= this.clientes.length; array++) {
         if (this.clientes[array].id == this.functionDelete) {
           var index = this.clientes.indexOf(this.clientes[array]);
@@ -344,20 +372,39 @@ numeroIdentification:'',
     },
 
     editar() {
-      
-      for(var array = 0; array<= this.clientes.length; array++){
-         
-        if(this.idEditar == this.clientes[array].id){
-          alert('123')
-           this.$store.state.clientes[array].tipocliente = this.tipoEditar;
-            this.$store.state.clientes[array].identificationcliente = this.numeroIdentification
-            this.$store.state.clientes[array].nomecliente = this.nomeEditar
-            this.dialogEditar = false
+      for (var array = 0; array <= this.clientes.length; array++) {
+        if (this.idEditar == this.clientes[array].id) {
+          this.$store.state.clientes[array].tipocliente = this.tipoEditar;
+          this.$store.state.clientes[array].identificationcliente =
+            this.numeroIdentification;
+          this.$store.state.clientes[array].nomecliente = this.nomeEditar;
+          this.dialogEditar = false;
+        }
+      }
+    },
+
+    pesquisar() {
+
+      this.resultSearch = [];
+
+      for (var array = 0; array <= this.clientes.length; array++) {
+        if (
+          this.textoPesquisa == this.clientes[array].tipocliente ||
+          this.textoPesquisa == this.clientes[array].identificationcliente ||
+          this.textoPesquisa == this.clientes[array].nomecliente
+        ) {
+          this.flagClearSearch = 1;
+
+          const values ={
+            id:this.clientes[array].id,
+            tipo:this.clientes[array].tipocliente,
+            identificador:this.clientes[array].identificationcliente,
+            nome:this.clientes[array].nomecliente,
+          }
+           this.resultSearch.push(values)
 
         }
-         
       }
-       
     },
   },
 
@@ -426,5 +473,11 @@ numeroIdentification:'',
   display: inline-flex;
 
   margin-top: -12px;
+}
+.search {
+  display: inline-flex;
+}
+.btn1 {
+  display: block;
 }
 </style>
