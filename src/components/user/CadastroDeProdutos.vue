@@ -27,9 +27,9 @@
     </div>
 
     <div id="showView">
-      <div v-for="(rotinas , indexs) in rotina" :key="indexs" class="rotina">
-          <p v-if="indexs == '1'">{{rotinas.rotina}}</p>
-        </div>
+      <div class="rotina">
+        <p>Nome da Rotina</p>
+      </div>
 
       <div class="search">
         <v-text-field
@@ -89,12 +89,6 @@ export default {
       }
     },
   },
-computed:{
-  rotina(){
-    return this.$store.state.rotina
-  }
-}
-
 };
 </script>
 
