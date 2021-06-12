@@ -4,7 +4,8 @@ import Router from 'vue-router'
 import Login from './components/Login'
 import MainPage from './components/user/MainPage'
 import CadastroClientes from './components/user/CadastroDeClientes'
-import teste from './components/user/teste'
+import CadastroEMpresa from './components/user/CadastroDeEmpresa'
+import CadastroProduto from './components/user/CadastroDeProduto'
 
 Vue.use(Router)
 
@@ -27,8 +28,12 @@ export default new Router({
         component: CadastroClientes
     },
     {
-        path:'/teste',
-        component:teste
+        path:'/cadastroempresa',
+        component:CadastroEMpresa
+    },
+    {
+        path:'/cadastroprodutos',
+        component: CadastroProduto
     }
    
 ]

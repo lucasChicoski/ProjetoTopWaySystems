@@ -5,13 +5,15 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state:{
-        clientes:[
-        //{id:1, tipocliente:'esse é um teste/', identificationcliente:'esse é um teste/', nomecliente:'esse é um teste/'}
-        ],
+        clientes:[],
+        empresa:[],
+        produto:[],
 
         rotina:[
             {rotina:'Cadastro de Clientes'},
-            {rotina:'Página Principal'}
+            {rotina:'Home'},
+            {rotina:'Cadastro de Empresa'},
+            {rotina: "Cadastro de Produtos"}
         ],
 
         usuario:{

@@ -33,7 +33,7 @@
 
       <div id="showView">
         <div v-for="(rotinas, indexs) in rotina" :key="indexs" class="rotina">
-          <h1 v-if="indexs == '2'">{{ rotinas.rotina }}</h1>
+          <h1 v-if="indexs == '3'">{{ rotinas.rotina }}</h1>
         </div>
 
         <!--Área de Pesquisa-->
@@ -63,40 +63,39 @@
             <thead>
               <tr class="meio" v-for="n in grid" :key="n">
                 <th>{{ n.id }}</th>
-                
+                <th>{{ n.tipo }}</th>
                 <th>{{ n.cnpjcpf }}</th>
                 <th>{{ n.nome }}</th>
-                <th>{{ n.nomefantasia }}</th>
                 <th>{{ n.endereco }}</th>
                 <th>{{ n.cidade }}</th>
                 <th>{{ n.estado }}</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(empresas, i) in empresa" :key="i">
-                <td v-if="flagClearSearch == 0">{{ empresas.id }}</td>
-                <td v-if="flagClearSearch == 0">{{ empresas.cnpj }}</td>
+              <tr v-for="(product, i) in produto" :key="i">
+                <td v-if="flagClearSearch == 0">{{ product.id }}</td>
+                <td v-if="flagClearSearch == 0">{{ product.productDescription }}</td>
                 <td v-if="flagClearSearch == 0">
-                  {{ empresas.nomeEmpresa }}
+                  {{ product.productPrice }}
                 </td>
-                <td v-if="flagClearSearch == 0">{{ empresas.nomeFantasia }}</td>
+                <td v-if="flagClearSearch == 0">{{ product.productCategory }}</td>
                 <td v-if="flagClearSearch == 0">
-                  {{ empresas.enderecoEmpresa }}
+                  {{ product.productNCM }}
                 </td>
-                <td v-if="flagClearSearch == 0">{{ empresas.cidadeEmpresa }}</td>
-                <td v-if="flagClearSearch == 0">{{ empresas.estadoEmpresa }}</td>
+                <td v-if="flagClearSearch == 0">{{ product.productAliquot }}</td>
+                <td v-if="flagClearSearch == 0">{{ product.productEnteprise }}</td>
               </tr>
               <!--Else da pesquisa-->
-              <tr v-for="(empresa, i) in resultSearch" :key="i">
-                <td v-if="flagClearSearch == 1">{{ empresa.id }}</td>
-                <td v-if="flagClearSearch == 1">{{ empresa.cnpj }}</td>
-                <td v-if="flagClearSearch == 1">{{ empresa.nomeempresa }}</td>
-                <td v-if="flagClearSearch == 1">{{ empresa.nomefantasia }}</td>
+              <tr v-for="(cliente, i) in resultSearch" :key="i">
+                <td v-if="flagClearSearch == 1">{{ cliente.id }}</td>
+                <td v-if="flagClearSearch == 1">{{ cliente.tipo }}</td>
+                <td v-if="flagClearSearch == 1">{{ cliente.identificador }}</td>
+                <td v-if="flagClearSearch == 1">{{ cliente.nome }}</td>
                 <td v-if="flagClearSearch == 1">
-                  {{ empresa.endereco }}
+                  {{ cliente.endereco }}
                 </td>
-                <td v-if="flagClearSearch == 1">{{ empresa.cidade }}</td>
-                <td v-if="flagClearSearch == 1">{{ empresa.estado }}</td>
+                <td v-if="flagClearSearch == 1">{{ cliente.cidade }}</td>
+                <td v-if="flagClearSearch == 1">{{ cliente.estado }}</td>
               </tr>
             </tbody>
           </table>
@@ -109,12 +108,12 @@
               <v-dialog v-model="dialog" persistent max-width="600px">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn color="primary" dark v-bind="attrs" v-on="on">
-                    Cadastrar Cliente
+                    Cadastrar Produtos
                   </v-btn>
                 </template>
                 <v-card>
                   <v-card-title>
-                    <span class="text-h5">Cadastrar Cliente</span>
+                    <span class="text-h5">Cadastrar Produtos</span>
                   </v-card-title>
 
                   <v-card-text>
@@ -122,52 +121,48 @@
                       <v-row>
                         <v-col cols="12" sm="6" md="4">
                           <v-text-field
-                            v-model="cnpj"
-                            label="CNPJ*"
-                            hint="Juridica ou Fisica"
+                            v-model="productDescription"
+                            label="Descrição*"
                             persistent-hint
                           ></v-text-field>
                         </v-col>
 
                         <v-col cols="12" sm="6" md="4">
                           <v-text-field
-                            v-model="nomeEmpresa"
-                            label="Nome da empresa*"
-                            hint="Com pontuação"
+                            v-model="productPrice"
+                            label="Preço*"
                             persistent-hint
                           ></v-text-field>
                         </v-col>
 
                         <v-col cols="12" sm="6" md="4">
                           <v-text-field
-                            v-model="nomeFantasia"
-                            label="Nome fantasia*"
-                            hint="Nome completo"
+                            v-model="productCategory"
+                            label="Categoria*"
                             persistent-hint
                           ></v-text-field>
                         </v-col>
 
                         <v-col cols="12" sm="6" md="4">
                           <v-text-field
-                            v-model="enderecoEmpresa"
-                            label="Endereço*"
-                            hint="Nome da logradouro"
+                            v-model="productNCM"
+                            label="NCM / Código*"
                             persistent-hint
                           ></v-text-field>
                         </v-col>
 
                         <v-col cols="12" sm="6" md="4">
                           <v-text-field
-                            v-model="cidadeEmpresa"
-                            label="Cidade*"
+                            v-model="productAliquot"
+                            label="Alíquota*"
                             persistent-hint
                           ></v-text-field>
                         </v-col>
 
                         <v-col cols="12" sm="6" md="4">
                           <v-text-field
-                            v-model="estadoEmpresa"
-                            label="Estado*"
+                            v-model="productEnteprise"
+                            label="Empresa*"
                             persistent-hint
                           ></v-text-field>
                         </v-col>
@@ -191,7 +186,7 @@
             </v-row>
           </div>
 
-          <!--                    Botão Excluir    -->
+          <!--              Botão Excluir            -->
 
           <div class="buttonsexcludeandupdate">
             <div class="excluir">
@@ -263,35 +258,35 @@
 
                           <v-col cols="12" sm="6" md="4">
                             <v-text-field
-                              v-model="cnpjEditar"
-                              label="CNPJ"
-                             
+                              v-model="descriptionEdit"
+                              label="Descrição"
+                              hint="Juridica ou Fisica"
                               persistent-hint
                             ></v-text-field>
                           </v-col>
 
                           <v-col cols="12" sm="6" md="4">
                             <v-text-field
-                              v-model="nomeEmpresaEditar"
-                              label="Nome da Empresa"
-                             
+                              v-model="priceEdit"
+                              label="Preço"
+                              hint="Com pontuação"
                               persistent-hint
                             ></v-text-field>
                           </v-col>
 
                           <v-col cols="12" sm="6" md="4">
                             <v-text-field
-                              v-model="nomeFantasiaEditar"
-                              label="Nome Fantasia"
-                             
+                              v-model="categoryEdit"
+                              label="Categoria"
+                              hint="Nome completo"
                               persistent-hint
                             ></v-text-field>
                           </v-col>
 
                           <v-col cols="12" sm="6" md="4">
                             <v-text-field
-                              v-model="enderecoEditar"
-                              label="Endereço"
+                              v-model="ncmEdit"
+                              label="NCM / Código"
                               hint="Logradouro"
                               persistent-hint
                             ></v-text-field>
@@ -299,16 +294,16 @@
 
                           <v-col cols="12" sm="6" md="4">
                             <v-text-field
-                              v-model="cidadeEditar"
-                              label="Cidade"
+                              v-model="aliquotEdit"
+                              label="Alíquota"
                               persistent-hint
                             ></v-text-field>
                           </v-col>
 
                           <v-col cols="12" sm="6" md="4">
                             <v-text-field
-                              v-model="estadoEditar"
-                              label="Estado"
+                              v-model="interpriseEdit"
+                              label="Empresa"
                               persistent-hint
                             ></v-text-field>
                           </v-col>
@@ -349,27 +344,26 @@ export default {
       count: 0, //contador de ID
 
       //--------------Variáveis método Cadastrar--------------------------------------------------
-      cnpj: "",
-      nomeEmpresa: "",
-      nomeFantasia: "",
-      enderecoEmpresa: "",
-      cidadeEmpresa: "",
-      estadoEmpresa: "",
+      productDescription: "",
+      productPrice: "",
+      productCategory: "",
+      productNCM: "",
+      productAliquot: "",
+      productEnteprise: "",
 
-      //--------------------Método Delete--------------------------------------------------
+      //--------------------Método Delete -----------------------------
       functionDelete: "",
 
       //--------------Cabeçalho do Grid--------------------------------------------------
       grid: [
         {
           id: "Id",
-          
-          cnpjcpf: "CNPJ",
-          nome: "Nome",
-          nomefantasia: " Nome Fantasia ",
-          endereco: "Endereço",
-          cidade: "Cidade",
-          estado: "Estado",
+          tipo: " Descrição ",
+          cnpjcpf: "Preço",
+          nome: "Categoria",
+          endereco: "NCM / Código",
+          cidade: "Alíquota",
+          estado: "Empresa",
         },
       ],
       //--------------Itens do Menu--------------------------------------------------
@@ -388,12 +382,12 @@ export default {
 
       //--------------EDITAR--------------------------------------------------
       idEditar: "",
-      cnpjEditar: "",
-      nomeEmpresaEditar: "",
-     nomeFantasiaEditar: "",
-      enderecoEditar: "",
-      cidadeEditar: "",
-      estadoEditar: "",
+      descriptionEdit: "",
+      priceEdit: "",
+      categoryEdit: "",
+      ncmEdit: "",
+      aliquotEdit: "",
+      interpriseEdit: "",
       //----------------------------------------------------------------------
       right: null,
       dialog: false,
@@ -407,9 +401,9 @@ export default {
       if (index == 0) {
         this.$router.push("/main");
       } else if (index == 1) {
-       console.log("")
+        this.$router.push('/cadastroempresa')
       } else if (index == 2) {
-       this.$router.push('/cadastroprodutos')
+       this.$router.push('')
       } else if (index == 3) {
         //window.location.href = "http://localhost:8080/cadastroclientes";
         this.$router.push("/cadastroclientes");
@@ -420,47 +414,49 @@ export default {
     cadastrar() {
       const usuario = {
         id: (this.count = this.count + 1),
-        cnpj: this.cnpj,
-        nomeEmpresa: this.nomeEmpresa,
-        nomeFantasia: this.nomeFantasia,
-        enderecoEmpresa: this.enderecoEmpresa,
-        cidadeEmpresa: this.cidadeEmpresa,
-        estadoEmpresa: this.estadoEmpresa,
+        productDescription: this.productDescription,
+        productPrice: this.productPrice,
+        productCategory: this.productCategory,
+        productNCM: this.productNCM,
+        productAliquot: this.productAliquot,
+        productEnteprise: this.productEnteprise,
       };
 
-      this.$store.state.empresa.push(usuario);
+      this.$store.state.produto.push(usuario);
       this.dialog = false;
 
-      this.cnpj = "";
-      this.nomeEmpresa = "";
-      this.nomeFantasia = "";
-      this.enderecoEmpresa = "",
-      this.cidadeEmpresa = "",
-      this.estadoEmpresa = ""
+      this.productDescription = "";
+      this.productPrice = "";
+      this.productCategory = "";
+      (this.productNCM = ""),
+        (this.productAliquot = ""),
+        (this.productEnteprise = "");
 
+      
     },
 
     excluir() {
-      for (var array = 0; array <= this.empresa.length; array++) {
-        if (this.empresa[array].id == this.functionDelete) {
-          var index = this.empresa.indexOf(this.empresa[array]);
-          this.$store.state.empresa.splice(index, 1);
+      for (var array = 0; array <= this.produto.length; array++) {
+        if (this.produto[array].id == this.functionDelete) {
+          var index = this.produto.indexOf(this.produto[array]);
+          this.$store.state.produto.splice(index, 1);
           this.functionDelete = "";
         }
       }
     },
 
     editar() {
-      for (var array = 0; array <= this.empresa.length; array++) {
-        if (this.idEditar == this.empresa[array].id) {
-          this.$store.state.empresa[array].cnpj = this.cnpjEditar;
-          this.$store.state.empresa[array].nomeEmpresa =
-            this.nomeEmpresaEditar;
-          this.$store.state.empresa[array].nomeFantasia = this.nomeFantasiaEditar;
-          this.$store.state.empresa[array].enderecoEmpresa =
-            this.enderecoEditar;
-          this.$store.state.empresa[array].cidadeEmpresa = this.cidadeEditar;
-          this.$store.state.empresa[array].estadoEmpresa = this.estadoEditar;
+      for (var array = 0; array <= this.produto.length; array++) {
+        if (this.idEditar == this.produto[array].id) {
+          
+          this.$store.state.produto[array].productDescription = this.descriptionEdit;
+          this.$store.state.produto[array].productPrice =
+            this.priceEdit;
+          this.$store.state.produto[array].productCategory = this.categoryEdit;
+          this.$store.state.produto[array].productNCM =
+            this.ncmEdit;
+          this.$store.state.produto[array].productAliquot = this.aliquotEdit;
+          this.$store.state.produto[array].productEnteprise = this.interpriseEdit;
 
           this.dialogEditar = false;
         }
@@ -470,25 +466,25 @@ export default {
     pesquisar() {
       this.resultSearch = [];
 
-      for (var array = 0; array <= this.empresa.length; array++) {
+      for (var array = 0; array <= this.produto.length; array++) {
         if (
-          this.textoPesquisa == this.empresa[array].cnpj ||
-          this.textoPesquisa == this.empresa[array].nomeEmpresa ||
-          this.textoPesquisa == this.empresa[array].nomeFantasia ||
-          this.textoPesquisa == this.empresa[array].enderecoEmpresa ||
-          this.textoPesquisa == this.empresa[array].cidadeEmpresa ||
-          this.textoPesquisa == this.empresa[array].estadoEmpresa
+          this.textoPesquisa == this.produto[array].productDescription ||
+          this.textoPesquisa == this.produto[array].productPrice ||
+          this.textoPesquisa == this.produto[array].productCategory ||
+          this.textoPesquisa == this.produto[array].productNCM ||
+          this.textoPesquisa == this.produto[array].productAliquot ||
+          this.textoPesquisa == this.produto[array].productEnteprise
         ) {
           this.flagClearSearch = 1;
 
           const values = {
-            id: this.empresa[array].id,
-            cnpj: this.empresa[array].cnpj,
-            nomeempresa: this.empresa[array].nomeEmpresa,
-            nomefantasia: this.empresa[array].nomeFantasia,
-            endereco: this.empresa[array].enderecoEmpresa,
-            cidade: this.empresa[array].cidadeEmpresa,
-            estado: this.empresa[array].estadoEmpresa,
+            id: this.produto[array].id,
+            tipo: this.produto[array].productDescription,
+            identificador: this.produto[array].productPrice,
+            nome: this.produto[array].productCategory,
+            endereco: this.produto[array].productNCM,
+            cidade: this.produto[array].productAliquot,
+            estado: this.produto[array].productEnteprise,
           };
           this.resultSearch.push(values);
         }
@@ -497,8 +493,8 @@ export default {
   },
 
   computed: {
-    empresa() {
-      return this.$store.state.empresa;
+    produto() {
+      return this.$store.state.produto;
     },
     rotina() {
       return this.$store.state.rotina;

@@ -6,9 +6,9 @@
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title class="text-h6">
-              Lucas Chicoski
+             {{nome}}
             </v-list-item-title>
-            <v-list-item-subtitle> Lucas </v-list-item-subtitle>
+            <v-list-item-subtitle> {{email}} </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
 
@@ -28,7 +28,7 @@
 
     <div id="showView">
       <div v-for="(rotinas , indexs) in rotina" :key="indexs" class="rotina">
-          <p v-if="indexs == '1'">{{rotinas.rotina}}</p>
+          <h1 v-if="indexs == '1'">{{rotinas.rotina}}</h1>
         </div>
 
       <div class="search">
@@ -69,6 +69,7 @@ export default {
         { title: "Cadastro de Empresa", icon: "" },
         { title: "Cadastro de Produtos", icon: "" },
         { title: "Cadastro de Clientes", icon: "" },
+        { title: "Sair"}
       ],
 
       right: null,
@@ -80,19 +81,29 @@ export default {
       if (index == 0) {
         alert("Você clicou em inicio");
       } else if (index == 1) {
-        alert("Cadastro de Empresa");
+        this.$router.push('/cadastroempresa')
       } else if (index == 2) {
-        alert("Cadastro de Produtos");
+        this.$router.push('/cadastroprodutos')
       } else if (index == 3) {
         //window.location.href = "http://localhost:8080/cadastroclientes";
         this.$router.push('/cadastroclientes')
+      } else if (index == 4){
+        this.$router.push('/')
       }
     },
   },
 computed:{
   rotina(){
     return this.$store.state.rotina
+  },
+
+  nome(){
+    return this.$store.state.usuario.Nome
+  },
+  email(){
+    return this.$store.state.usuario.Email
   }
+
 }
 
 };

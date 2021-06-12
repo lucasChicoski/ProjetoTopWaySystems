@@ -405,9 +405,9 @@ export default {
       if (index == 0) {
         this.$router.push("/main");
       } else if (index == 1) {
-        alert("Cadastro de Empresa");
+        this.$router.push('/cadastroempresa')
       } else if (index == 2) {
-        alert("Cadastro de Produtos");
+        this.$router.push('/cadastroprodutos')
       } else if (index == 3) {
         //window.location.href = "http://localhost:8080/cadastroclientes";
         this.$router.push("/cadastroclientes");
@@ -548,6 +548,7 @@ padding-right: 10px;
 
 .grid {
   background-color: rgb(233, 233, 207);
+  box-shadow: 0px 0px 5px;
   border-radius: 10px;
 }
 
