@@ -26,17 +26,7 @@
 export default {
   data() {
     return {
-      email: "lucas.chicoski@outlook.com",
-      nome: "Lucas",
-
-      teste: [
-        { nome: "Lucas", email: "lucas.chicoski@outlook.com", senha: "1234" },
-        { nome: "Bruno", email: "bruno@outlook.com", senha: "1234" },
-        { nome: "Rafaella", email: "rafaela@outlook.com", senha: "1234" },
-        { nome: "Cloves", email: "cloves@outlook.com", senha: "1234" },
-        { nome: "Luiza", email: "luiza@outlook.com", senha: "1234" },
-      ],
-
+     
       login: "",
       senha: "",
     };
