@@ -63,12 +63,12 @@
             <thead>
               <tr class="meio" v-for="n in grid" :key="n">
                 <th>{{ n.id }}</th>
-                <th>{{ n.tipo }}</th>
-                <th>{{ n.cnpjcpf }}</th>
-                <th>{{ n.nome }}</th>
-                <th>{{ n.endereco }}</th>
-                <th>{{ n.cidade }}</th>
-                <th>{{ n.estado }}</th>
+                <th>{{ n.description }}</th>
+                <th>{{ n.price }}</th>
+                <th>{{ n.category }}</th>
+                <th>{{ n.code }}</th>
+                <th>{{ n.aliquot }}</th>
+                <th>{{ n.enterprise }}</th>
               </tr>
             </thead>
             <tbody>
@@ -76,13 +76,13 @@
                 <td v-if="flagClearSearch == 0">{{ product.id }}</td>
                 <td v-if="flagClearSearch == 0">{{ product.productDescription }}</td>
                 <td v-if="flagClearSearch == 0">
-                  {{ product.productPrice }}
+                  {{ 'R$ ' + product.productPrice}}
                 </td>
                 <td v-if="flagClearSearch == 0">{{ product.productCategory }}</td>
                 <td v-if="flagClearSearch == 0">
                   {{ product.productNCM }}
                 </td>
-                <td v-if="flagClearSearch == 0">{{ product.productAliquot }}</td>
+                <td v-if="flagClearSearch == 0">{{ product.productAliquot + '%' }}</td>
                 <td v-if="flagClearSearch == 0">{{ product.productEnteprise }}</td>
               </tr>
               <!--Else da pesquisa-->
@@ -154,7 +154,7 @@
                         <v-col cols="12" sm="6" md="4">
                           <v-text-field
                             v-model="productAliquot"
-                            label="Alíquota*"
+                            label="Alíquota %*"
                             persistent-hint
                           ></v-text-field>
                         </v-col>
@@ -295,7 +295,7 @@
                           <v-col cols="12" sm="6" md="4">
                             <v-text-field
                               v-model="aliquotEdit"
-                              label="Alíquota"
+                              label="Alíquota %"
                               persistent-hint
                             ></v-text-field>
                           </v-col>
@@ -358,12 +358,12 @@ export default {
       grid: [
         {
           id: "Id",
-          tipo: " Descrição ",
-          cnpjcpf: "Preço",
-          nome: "Categoria",
-          endereco: "NCM / Código",
-          cidade: "Alíquota",
-          estado: "Empresa",
+          description: " Descrição ",
+          price: "Preço",
+          category: "Categoria",
+          code: "NCM / Código",
+          aliquot: "Alíquota",
+          enterprise: "Empresa",
         },
       ],
       //--------------Itens do Menu--------------------------------------------------

@@ -3,12 +3,14 @@
     <div class="root">
       <v-col class="intenForm" cols="12" sm="6" md="3">
         <div class="form">
-          <v-text-field label="Usuario" v-model="login"></v-text-field>
+        <img class="icon" src="../assets/arrow_entrance_in_internet_log_login_security_icon_127060.png" alt="">
+        <h1 class="login">Login</h1>
+          <v-text-field color="white" label="Usuario" v-model="login"></v-text-field>
 
-          <v-text-field label="Senha" v-model="senha"></v-text-field>
+          <v-text-field color="white" type="password" label="Senha" v-model="senha"></v-text-field>
 
           <div class="buttonSubmit">
-            <v-btn width="130" @click="entrar()">Entrar</v-btn>
+            <v-btn  class="bt0" width="130" @click="entrar()">Entrar</v-btn>
             <v-btn width="130" @click="cadastrar()">Cadastrar</v-btn>
           </div>
         </div>
@@ -47,25 +49,14 @@ export default {
      for(let array = 0 ; array < this.users.length;array++){
        console.log(this.users[array].email)
        if(this.login == this.users[array].email && this.senha == this.users[array].senha){
+         this.$store.state.usuario.Nome = this.users[array].nome;
+           this.$store.state.usuario.Email = this.users[array].email;
          this.$router.push('/main')
+       }else if(this.login == '' || this.senha == ''){
+         alert('Preencha todos os Campos')
        }
      }
-      // for (var i = 0; i < this.users[i].length; i++) {
-      //   if (
-      //     this.login == this.users[i].email &&
-      //     this.senha == this.users[i].senha
-      //   ) {
-      //     alert(this.teste[i].nome + "acessou");
-      //     // window.location.href = "http://localhost:8080/main";
-      //     this.$store.state.usuario.Nome = this.users[i].nome;
-      //     this.$store.state.usuario.Email = this.users[i].email;
-      //     this.$router.push("/main");
-      //   } else if (this.login == "" || this.senha == "") {
-      //     alert("preencha todos os campos");
-      //   } else {
-      //     alert("usuario ou senha incorreto");
-      //   }
-      // }
+     
     },
 
     cadastrar() {
@@ -112,4 +103,20 @@ export default {
   border-radius: 20px;
   padding: 10%;
 }
+.bt0{
+  margin-right: 5px;
+}
+
+.icon{
+  width: 50px;
+  height: 50px;
+  
+  display: flex;
+  flex-direction: column;
+}
+.login{
+  text-align: center;
+  color: white;
+}
+
 </style>

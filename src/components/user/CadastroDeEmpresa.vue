@@ -73,8 +73,11 @@
               </tr>
             </thead>
             <tbody>
+            
               <tr v-for="(empresas, i) in empresa" :key="i">
+              
                 <td v-if="flagClearSearch == 0">{{ empresas.id }}</td>
+                
                 <td v-if="flagClearSearch == 0">{{ empresas.cnpj }}</td>
                 <td v-if="flagClearSearch == 0">
                   {{ empresas.nomeEmpresa }}
@@ -109,7 +112,7 @@
               <v-dialog v-model="dialog" persistent max-width="600px">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn color="primary" dark v-bind="attrs" v-on="on">
-                    Cadastrar Cliente
+                    Cadastrar Empresa
                   </v-btn>
                 </template>
                 <v-card>
@@ -124,7 +127,7 @@
                           <v-text-field
                             v-model="cnpj"
                             label="CNPJ*"
-                            hint="Juridica ou Fisica"
+                            
                             persistent-hint
                           ></v-text-field>
                         </v-col>
@@ -133,7 +136,7 @@
                           <v-text-field
                             v-model="nomeEmpresa"
                             label="Nome da empresa*"
-                            hint="Com pontuação"
+                           
                             persistent-hint
                           ></v-text-field>
                         </v-col>
@@ -142,7 +145,7 @@
                           <v-text-field
                             v-model="nomeFantasia"
                             label="Nome fantasia*"
-                            hint="Nome completo"
+                           
                             persistent-hint
                           ></v-text-field>
                         </v-col>

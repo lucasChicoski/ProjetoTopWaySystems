@@ -225,13 +225,13 @@
           <table>
             <thead>
               <tr class="meio" v-for="n in grid" :key="n">
-                <th>{{ n.id }}</th>
-                <th>{{ n.tipo }}</th>
-                <th>{{ n.cnpjcpf }}</th>
-                <th>{{ n.nome }}</th>
-                <th>{{ n.endereco }}</th>
-                <th>{{ n.cidade }}</th>
-                <th>{{ n.estado }}</th>
+                 <th>{{ n.id }}</th>
+                <th>{{ n.description }}</th>
+                <th>{{ n.price  }}</th>
+                <th>{{ n.category }}</th>
+                <th>{{ n.code }}</th>
+                <th>{{ n.aliquot }}</th>
+                <th>{{ n.enterprise }}</th>
               </tr>
             </thead>
             <tbody>
@@ -241,7 +241,7 @@
                   {{ product.productDescription }}
                 </td>
                 <td v-if="flagClearSearch == 0">
-                  {{ product.productPrice }}
+                  {{'R$ '+ product.productPrice }}
                 </td>
                 <td v-if="flagClearSearch == 0">
                   {{ product.productCategory }}
@@ -250,7 +250,7 @@
                   {{ product.productNCM }}
                 </td>
                 <td v-if="flagClearSearch == 0">
-                  {{ product.productAliquot }}
+                  {{ product.productAliquot + '%' }}
                 </td>
                 <td v-if="flagClearSearch == 0">
                   {{ product.productEnteprise }}
@@ -302,7 +302,7 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <p class="calculo">Preço do Produto: R$ {{result}}</p>
+          <p class="calculo">Preço total do produto: R$ {{result}}</p>
         </v-row>
         
         <!--FIM Botão Dialog-->
@@ -340,12 +340,12 @@ y:0,
       grid: [
         {
           id: "Id",
-          tipo: " Descrição ",
-          cnpjcpf: "Preço",
-          nome: "Categoria",
-          endereco: "NCM / Código",
-          cidade: "Alíquota",
-          estado: "Empresa",
+          description: " Descrição ",
+          price: "Preço",
+          category: "Categoria",
+          code: "NCM / Código",
+          aliquot: "Alíquota %",
+          enterprise: "Empresa",
         },
       ],
 
@@ -516,7 +516,7 @@ y:0,
         var  precoFloat = parseFloat(this.produto[array].productPrice)
         var  aliquotaFloat = parseFloat(this.produto[array].productAliquot)
 
-          var Aliquota = precoFloat * aliquotaFloat
+          var Aliquota = precoFloat * (aliquotaFloat / 100)
           var Preco = precoFloat + Aliquota
 
           this.result = Preco
