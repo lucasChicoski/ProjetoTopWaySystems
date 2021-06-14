@@ -19,7 +19,8 @@ export default new Vuex.Store({
         usuario:{
             Nome:'',
             Email:''
-        }
+        },
+        usuarios:[{nome:'',email:'s',senha:''}]
 
     }
 })
