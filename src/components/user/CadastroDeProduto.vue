@@ -345,10 +345,10 @@ export default {
 
       //--------------Variáveis método Cadastrar--------------------------------------------------
       productDescription: "",
-      productPrice: "",
+      productPrice: '',
       productCategory: "",
       productNCM: "",
-      productAliquot: "",
+      productAliquot: '',
       productEnteprise: "",
 
       //--------------------Método Delete -----------------------------
