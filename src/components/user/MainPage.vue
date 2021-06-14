@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="app">
     <div id="root">
       <div class="menu">
         <v-navigation-drawer permanent>
@@ -46,10 +46,10 @@
             ></v-text-field>
           </div>
           <div class="buttons">
-            <v-btn @click="pesquisarClient()" class="bt1" elevation="2"
+            <v-btn color="#d4d0cc" width="170" @click="pesquisarClient()" class="bt1" elevation="2"
               >Pesquisar</v-btn
             >
-            <v-btn @click="flagClearSearchClient = 0" class="bt2" elevation="2"
+            <v-btn color="#d4d0cc" @click="flagClearSearchClient = 0" class="bt2" elevation="2"
               >Limpar Pesquisa</v-btn
             >
           </div>
@@ -57,7 +57,7 @@
         <div class="grid">
           <table>
             <thead>
-              <tr class="meio" v-for="n in grid" :key="n">
+              <tr class="meio" v-for="n in gridClient" :key="n">
                 <th>{{ n.id }}</th>
                 <th>{{ n.tipo }}</th>
                 <th>{{ n.cnpjcpf }}</th>
@@ -114,6 +114,7 @@
         <div class="compnent">
           <div class="search">
             <v-text-field
+            color="#d4d0cc"
               class="buttonSearch"
               v-model="textoPesquisaEnterprise"
               solo
@@ -122,11 +123,12 @@
             ></v-text-field>
           </div>
           <div class="buttons">
-            <v-btn @click="pesquisarEnterprise()" class="bt1" elevation="2"
+            <v-btn width="170px" color="#d4d0cc"  @click="pesquisarEnterprise()" class="bt1" elevation="2"
               >Pesquisar</v-btn
             >
             <v-btn
               @click="flagClearSearchEnterprise = 0"
+              color="#d4d0cc"
               class="bt2"
               elevation="2"
               >Limpar Pesquisa</v-btn
@@ -211,10 +213,10 @@
             ></v-text-field>
           </div>
           <div class="buttons">
-            <v-btn @click="pesquisar()" class="bt1" elevation="2"
+            <v-btn color="#d4d0cc" width="170" @click="pesquisar()" class="bt1" elevation="2"
               >Pesquisar</v-btn
             >
-            <v-btn @click="flagClearSearch = 0" class="bt2" elevation="2"
+            <v-btn color="#d4d0cc" @click="flagClearSearch = 0" class="bt2" elevation="2"
               >Limpar Pesquisa</v-btn
             >
           </div>
@@ -271,7 +273,7 @@
         </div>
 
         <!--Botão Dialog-->
-        <v-row justify="center">
+        <v-row class="ButtonDialog">
           <v-dialog v-model="dialog" persistent max-width="290">
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="primary" dark v-bind="attrs" v-on="on">
@@ -300,7 +302,7 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <p>Preço do Produto: R$ {{result}}</p>
+          <p class="calculo">Preço do Produto: R$ {{result}}</p>
         </v-row>
         
         <!--FIM Botão Dialog-->
@@ -385,6 +387,26 @@ y:0,
     };
   },
 
+  computed: {
+    rotina() {
+      return this.$store.state.rotina;
+    },
+    clientes() {
+      return this.$store.state.clientes;
+    },
+    empresa() {
+      return this.$store.state.empresa;
+    },
+    produto() {
+      return this.$store.state.produto;
+    },
+    nome() {
+      return this.$store.state.usuario.Nome;
+    },
+    email() {
+      return this.$store.state.usuario.Email;
+    },
+  },
   methods: {
     google(index) {
       if (index == 0) {
@@ -508,28 +530,8 @@ y:0,
     }
    
   },
-  computed: {
-    rotina() {
-      return this.$store.state.rotina;
-    },
-    clientes() {
-      return this.$store.state.clientes;
-    },
-    empresa() {
-      return this.$store.state.empresa;
-    },
-    produto() {
-      return this.$store.state.produto;
-    },
-    nome() {
-      return this.$store.state.usuario.Nome;
-    },
-    email() {
-      return this.$store.state.usuario.Email;
-    },
-  },
 };
-</script>
+</script> 
 
 <style>
 #root {
@@ -566,9 +568,28 @@ y:0,
 }
 .bt1 {
   display: block;
+  margin-bottom: 5px;
+  
 }
 
 .compnent {
   display: inline-flex;
+}
+.ButtonDialog{
+  margin-top: 100px;
+}
+p{
+  font-size: 20px;
+}
+.calculo{
+  margin-left: 7px;
+}
+hr{
+  margin-top: 20px;
+  
+}
+.buttons{
+  padding-bottom: 10px;
+  margin-left: 8px;
 }
 </style>
