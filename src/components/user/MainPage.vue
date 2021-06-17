@@ -3,14 +3,12 @@
     <div id="root">
       <div class="menu">
         <v-navigation-drawer permanent>
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title class="text-h6">
-                {{ nome }}
-              </v-list-item-title>
-              <v-list-item-subtitle> {{ email }} </v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
+          <app-cabecalho
+          :usuarios="usuarios"
+          :email="email"
+        />
+
+
 
           <v-divider></v-divider>
 
@@ -27,9 +25,14 @@
       </div>
 
       <div id="showView">
-        <div v-for="(rotinas, indexs) in rotina" :key="indexs" class="rotina">
-          <h1 v-if="indexs == '1'">{{ rotinas.rotina }}</h1>
-        </div>
+        
+<app-rotina
+          :rotina="rotina"
+          :indiceNumero="indiceNumero"
+
+        />
+
+        
         <hr />
 
         <!--Clientes-->
@@ -335,7 +338,7 @@ y:0,
       flagClearSearchEnterprise: 0,
       textoPesquisaEnterprise: "",
 
-      
+      indiceNumero:'1',
 
       grid: [
         {
