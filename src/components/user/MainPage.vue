@@ -2,26 +2,12 @@
   <v-app class="app">
     <div id="root">
       <div class="menu">
-        <v-navigation-drawer permanent>
-          <app-cabecalho
-          :usuarios="usuarios"
-          :email="email"
-        />
-
-
-
-          <v-divider></v-divider>
-
-          <v-list dense nav>
-            <v-list-item v-for="(item, i) in items" :key="i" link>
-              <v-list-item-content>
-                <v-btn v-on:click="google(i)" elevation="2" rounded text tile>{{
-                  item.title
-                }}</v-btn>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </v-navigation-drawer>
+       <app-navigation
+        :itensNavigation="items"
+        :functionNavigation="navigation"
+        :nomeUser="nome"
+        :emailUser="email"
+       />
       </div>
 
       <div id="showView">
@@ -411,7 +397,7 @@ y:0,
     },
   },
   methods: {
-    google(index) {
+    navigation(index) {
       if (index == 0) {
         alert("Você clicou em inicio");
       } else if (index == 1) {

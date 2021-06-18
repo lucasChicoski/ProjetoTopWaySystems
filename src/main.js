@@ -5,11 +5,13 @@ import vuetify from './plugins/vuetify'
 import store from './store/store'
 
 //componentes
-import cabecalhomenu from './components/html-component/cabecalhomenu'
-import rotina from './components/html-component/rotina.vue'
 
-Vue.component('app-cabecalho', cabecalhomenu)
+import rotina from './components/html-component/rotina.vue'
+import navigation from './components/html-component/navigationdrower.vue'
+
+
 Vue.component('app-rotina', rotina)
+Vue.component('app-navigation', navigation)
 
 
 Vue.config.productionTip = false

@@ -22,5 +22,14 @@ export default new Vuex.Store({
         },
         usuarios:[{nome:'',email:'s',senha:''}]
 
+    },
+    getters:{
+
+    },
+    mutations:{
+        
+    },
+    actions:{
+
     }
 })

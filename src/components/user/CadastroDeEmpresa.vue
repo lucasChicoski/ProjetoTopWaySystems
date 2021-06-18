@@ -3,11 +3,14 @@
     <div id="root">
       <div class="menu">
         <v-navigation-drawer permanent>
-          <app-cabecalho
-          :usuarios="usuarios"
-          :email="email"
-        />
-
+           <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title class="text-h6">
+                {{ usuarios }}
+              </v-list-item-title>
+              <v-list-item-subtitle> {{ email }} </v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
 
           <v-divider></v-divider>
 
