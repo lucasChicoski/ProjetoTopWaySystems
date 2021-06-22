@@ -8,7 +8,12 @@
 
 <script>
 export default {
-props:['rotina','indiceNumero']
+props:['indiceNumero'],
+computed:{
+  rotina() {
+      return this.$store.state.rotina;
+    },
+}
 
 };
 </script>

@@ -2,34 +2,16 @@
   <v-app>
     <div id="root">
       <div class="menu">
-        <v-navigation-drawer permanent>
-          
-         <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title class="text-h6">
-                {{ usuarios }}
-              </v-list-item-title>
-              <v-list-item-subtitle> {{ email }} </v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-divider></v-divider>
-
-          <v-list dense nav>
-            <v-list-item v-for="(item, i) in items" :key="i" link>
-              <v-list-item-content>
-                <v-btn
-                  v-on:click="navigation(i)"
-                  elevation="2"
-                  rounded
-                  text
-                  tile
-                  >{{ item.title }}</v-btn
-                >
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </v-navigation-drawer>
+         <!--Navigation-->
+       <app-navigation
+        :itensNavigation="items"
+        :functionNavigation="navigation"
+        :nomeUser="usuarios"
+        :emailUser="email"
+       />
+       <!--Navigation-->
+    
+    
       </div>
 
       <div id="showView">
@@ -374,13 +356,7 @@ export default {
         },
       ],
       //--------------Itens do Menu--------------------------------------------------
-      items: [
-        { title: "Início" },
-        { title: "Cadastro de Empresa", icon: "" },
-        { title: "Cadastro de Produtos", icon: "" },
-        { title: "Cadastro de Clientes", icon: "" },
-        { title: "Sair" },
-      ],
+    
       //--------------PESQUISA--------------------------------------------------
       textoPesquisa: "",
       flagClearSearch: 0,

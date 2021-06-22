@@ -7,6 +7,9 @@ import CadastroClientes from './components/user/CadastroDeClientes'
 import CadastroEMpresa from './components/user/CadastroDeEmpresa'
 import CadastroProduto from './components/user/CadastroDeProduto'
 import CadastroPessoas from './components/Cadastro'
+import CadastroCategproa from './components/user/CadastroDeCategoria'
+import CadastroNcm from './components/user/CadastroDeNcm.vue'
+import CadastroAliquota from './components/user/CadastroDeAliquota.vue'
 
 Vue.use(Router)
 
@@ -39,6 +42,18 @@ export default new Router({
     {
         path:'/cadastrar',
         component:CadastroPessoas
+    },
+    {
+        path:'/cadastrocategoria',
+        component:CadastroCategproa
+    },
+    {
+        path:'/cadastroaliquota',
+        component:CadastroAliquota
+    },
+    {
+        path:'/cadastroNcm',
+        component:CadastroNcm
     }
    
 ]

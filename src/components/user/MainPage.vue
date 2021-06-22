@@ -261,40 +261,7 @@
           </table>
         </div>
 
-        <!--Botão Dialog-->
-        <v-row class="ButtonDialog">
-          <v-dialog v-model="dialog" persistent max-width="290">
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn color="primary" dark v-bind="attrs" v-on="on">
-                Calcular Preço com a Alíquota
-              </v-btn>
-            </template>
-            <v-card>
-              <v-card-title class="text-h5">
-                Calcule o preço com a taxa
-              </v-card-title>
-              <v-card-text
-                ><v-text-field
-            v-model="idCalculo"
-            label="Informe o Id do produto"
-            clearable
-          ></v-text-field></v-card-text
-              >
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="green darken-1" text @click="dialog = false">
-                  Cancelar
-                </v-btn>
-                <v-btn color="green darken-1" text @click="calculadora()">
-                  Calcular
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-          <p class="calculo">Preço total do produto: R$ {{result}}</p>
-        </v-row>
-        
-        <!--FIM Botão Dialog-->
+    
       </div>
     </div>
   </v-app>
@@ -364,13 +331,7 @@ y:0,
       ],
 
       intensGrid: [],
-      items: [
-        { title: "Início" },
-        { title: "Cadastro de Empresa", icon: "" },
-        { title: "Cadastro de Produtos", icon: "" },
-        { title: "Cadastro de Clientes", icon: "" },
-        { title: "Sair" },
-      ],
+      
 
       right: null,
     };

@@ -2,41 +2,18 @@
   <v-app>
     <div id="root">
       <div class="menu">
-        <v-navigation-drawer permanent>
-        
-       <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title class="text-h6">
-                {{ usuarios }}
-              </v-list-item-title>
-              <v-list-item-subtitle> {{ email }} </v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-divider></v-divider>
-
-          <v-list dense nav>
-            <v-list-item v-for="(item, i) in items" :key="i" link>
-              <v-list-item-content>
-                <v-btn
-                  v-on:click="navigation(i)"
-                  elevation="2"
-                  rounded
-                  text
-                  tile
-                  >{{ item.title }}</v-btn
-                >
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </v-navigation-drawer>
+        <!--Navigation-->
+        <app-navigation
+          :itensNavigation="items"
+          :functionNavigation="navigation"
+          :nomeUser="usuarios"
+          :emailUser="email"
+        />
+        <!--Navigation-->
       </div>
 
       <div id="showView">
-        <app-rotina
-          :rotina="rotina"
-          :indiceNumero="indiceNumero"
-        />
+        <app-rotina :rotina="rotina" :indiceNumero="indiceNumero" />
 
         <!--Área de Pesquisa-->
         <div class="search">
@@ -59,7 +36,9 @@
             >
           </div>
         </div>
+
         <!--GRID-->
+
         <div class="grid">
           <table>
             <thead>
@@ -76,16 +55,24 @@
             <tbody>
               <tr v-for="(product, i) in produto" :key="i">
                 <td v-if="flagClearSearch == 0">{{ product.id }}</td>
-                <td v-if="flagClearSearch == 0">{{ product.productDescription }}</td>
                 <td v-if="flagClearSearch == 0">
-                  {{ 'R$ ' + product.productPrice}}
+                  {{ product.productDescription }}
                 </td>
-                <td v-if="flagClearSearch == 0">{{ product.productCategory }}</td>
+                <td v-if="flagClearSearch == 0">
+                  {{ "R$ " + product.productPrice }}
+                </td>
+                <td v-if="flagClearSearch == 0">
+                  {{ product.productCategory }}
+                </td>
                 <td v-if="flagClearSearch == 0">
                   {{ product.productNCM }}
                 </td>
-                <td v-if="flagClearSearch == 0">{{ product.productAliquot + '%' }}</td>
-                <td v-if="flagClearSearch == 0">{{ product.productEnteprise }}</td>
+                <td v-if="flagClearSearch == 0">
+                  {{ product.productAliquot + "%" }}
+                </td>
+                <td v-if="flagClearSearch == 0">
+                  {{ product.productEnteprise }}
+                </td>
               </tr>
               <!--Else da pesquisa-->
               <tr v-for="(cliente, i) in resultSearch" :key="i">
@@ -347,10 +334,10 @@ export default {
 
       //--------------Variáveis método Cadastrar--------------------------------------------------
       productDescription: "",
-      productPrice: '',
+      productPrice: "",
       productCategory: "",
       productNCM: "",
-      productAliquot: '',
+      productAliquot: "",
       productEnteprise: "",
 
       //--------------------Método Delete -----------------------------
@@ -369,19 +356,13 @@ export default {
         },
       ],
       //--------------Itens do Menu--------------------------------------------------
-      items: [
-        { title: "Início" },
-        { title: "Cadastro de Empresa", icon: "" },
-        { title: "Cadastro de Produtos", icon: "" },
-        { title: "Cadastro de Clientes", icon: "" },
-        { title: "Sair" },
-      ],
+
       //--------------PESQUISA--------------------------------------------------
       textoPesquisa: "",
       flagClearSearch: 0,
       resultSearch: [],
       //----------------------------------------------------------------------
-indiceNumero:'3',
+      indiceNumero: "3",
       //--------------EDITAR--------------------------------------------------
       idEditar: "",
       descriptionEdit: "",
@@ -403,9 +384,9 @@ indiceNumero:'3',
       if (index == 0) {
         this.$router.push("/main");
       } else if (index == 1) {
-        this.$router.push('/cadastroempresa')
+        this.$router.push("/cadastroempresa");
       } else if (index == 2) {
-       this.$router.push('')
+        this.$router.push("");
       } else if (index == 3) {
         //window.location.href = "http://localhost:8080/cadastroclientes";
         this.$router.push("/cadastroclientes");
@@ -433,8 +414,6 @@ indiceNumero:'3',
       (this.productNCM = ""),
         (this.productAliquot = ""),
         (this.productEnteprise = "");
-
-      
     },
 
     excluir() {
@@ -450,15 +429,14 @@ indiceNumero:'3',
     editar() {
       for (var array = 0; array <= this.produto.length; array++) {
         if (this.idEditar == this.produto[array].id) {
-          
-          this.$store.state.produto[array].productDescription = this.descriptionEdit;
-          this.$store.state.produto[array].productPrice =
-            this.priceEdit;
+          this.$store.state.produto[array].productDescription =
+            this.descriptionEdit;
+          this.$store.state.produto[array].productPrice = this.priceEdit;
           this.$store.state.produto[array].productCategory = this.categoryEdit;
-          this.$store.state.produto[array].productNCM =
-            this.ncmEdit;
+          this.$store.state.produto[array].productNCM = this.ncmEdit;
           this.$store.state.produto[array].productAliquot = this.aliquotEdit;
-          this.$store.state.produto[array].productEnteprise = this.interpriseEdit;
+          this.$store.state.produto[array].productEnteprise =
+            this.interpriseEdit;
 
           this.dialogEditar = false;
         }
@@ -524,9 +502,9 @@ indiceNumero:'3',
   margin-left: 25%;
   display: inline-flex;
 }
-.excluir{
-padding-left: 10px;
-padding-right: 10px;
+.excluir {
+  padding-left: 10px;
+  padding-right: 10px;
 }
 .menu {
   margin: 10px;
