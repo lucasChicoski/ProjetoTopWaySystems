@@ -3,18 +3,25 @@
     <div class="root">
       <div class="head">
         <v-row>
+          <!--Campo Pesquisa-->
           <v-col cols="12" sm="6">
             <v-text-field
-              v-model="message2"
+              v-model="passworldSearch"
               solo
-              label="Solo"
+              label="Pesquisar"
+              :hint="hintPesquisa"
               clearable
             ></v-text-field>
           </v-col>
 
+          <!--Botões de ações pesquisa-->
           <v-col cols="1" sm="1">
-            <v-btn class="btn1" elevation="2">Pesquisar</v-btn>
-            <v-btn elevation="2">Limpar pesquisa</v-btn>
+            <v-btn @click="pesquisar()" class="btn1" elevation="2"
+              >Pesquisar</v-btn
+            >
+            <v-btn @click="clearSearch = 0" elevation="2"
+              >Limpar pesquisa</v-btn
+            >
           </v-col>
         </v-row>
       </div>
@@ -31,9 +38,17 @@
             </thead>
             <tbody>
               <tr v-for="nLines in retornoGetter" :key="nLines">
-                <td>{{ nLines.id }}</td>
-                <td>{{ nLines.campoCadastro1 }}</td>
-                <td>{{ nLines.campoCadastro2 }}</td>
+                <td v-if="clearSearch == 0">{{ nLines.id }}</td>
+                <td v-if="clearSearch == 0">{{ nLines.campoCadastro1 }}</td>
+                <td v-if="clearSearch == 0">
+                  {{ nLines.campoCadastro2 }}{{ porcentagemAliquota }}
+                </td>
+              </tr>
+              <!--else da parte de cima-->
+              <tr v-for="nLines in resultSearch" :key="nLines">
+                <td v-if="clearSearch == 1">{{ nLines.id }}</td>
+                <td v-if="clearSearch == 1">{{ nLines.campo1 }}</td>
+                <td v-if="clearSearch == 1">{{ nLines.campo2 }}</td>
               </tr>
             </tbody>
           </table>
@@ -64,7 +79,9 @@
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
+                          v-if="disableText2 == 0"
                           v-model="modelCampoText2"
+                          :hint="hintAliquota"
                           :label="campoText2"
                         ></v-text-field>
                       </v-col>
@@ -120,9 +137,12 @@
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
+                          v-if="disableText2 == 0"
                           v-model="modelCampoEditText2"
+                          :hint="hintAliquota"
                           :label="campoText2"
                         ></v-text-field>
+                        
                       </v-col>
                     </v-row>
                   </v-container>
@@ -140,30 +160,37 @@
             </v-dialog>
           </v-row>
           <!--Fim do Botão Editar-->
+
           <!--Botão Excluir-->
           <v-row class="buttonExclude" justify="center">
             <v-dialog v-model="dialogExclude" persistent max-width="290">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn color="primary" dark v-bind="attrs" v-on="on">
-                  Open Dialog
+                  Excluir {{ nomeCadastro }}
                 </v-btn>
               </template>
               <v-card>
                 <v-card-title class="text-h5">
-                  Use Google's location service?
+                  Digite o Id para excluir {{ nomeCadastro }}
                 </v-card-title>
-                <v-card-text
-                  >Let Google help apps determine location. This means sending
-                  anonymous location data to Google, even when no apps are
-                  running.</v-card-text
-                >
+                <v-card-text>
+                  <v-col cols="12" sm="1" md="10">
+                    <v-text-field
+                      v-model="idExclude"
+                      label="Id"
+                    ></v-text-field> </v-col
+                ></v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="green darken-1" text @click="dialogExclude = false">
-                    Disagree
+                  <v-btn
+                    color="green darken-1"
+                    text
+                    @click="dialogExclude = false"
+                  >
+                    Cancelar
                   </v-btn>
-                  <v-btn color="green darken-1" text @click="dialogExclude = false">
-                    Agree
+                  <v-btn color="green darken-1" text @click="excluir()">
+                    Excluir
                   </v-btn>
                 </v-card-actions>
               </v-card>
@@ -182,14 +209,18 @@
 export default {
   props: [
     "contentGrid",
+    "hintPesquisa",
     "nomeCadastro",
     "campoText1",
     "campoText2",
-    "camposStore", //OBS Excluir
     "retornoGetter",
     "edithitID",
     "MethodCadastro",
     "MethodEditar",
+    "MethodExcluir",
+    "hintAliquota",
+    "porcentagemAliquota",
+    "disableText2",
   ],
 
   data() {
@@ -197,7 +228,6 @@ export default {
       dialogCadastro: false,
       dialogExclude: false,
       dialogEdit: false,
-
 
       //Cadastro
       id: 0,
@@ -208,6 +238,14 @@ export default {
       campoIdEdit: "",
       modelCampoEditText1: "",
       modelCampoEditText2: "",
+
+      //excluir
+      idExclude: "",
+
+      //Pesquisar
+      resultSearch: [],
+      passworldSearch: "",
+      clearSearch: 0,
     };
   },
 
@@ -246,6 +284,38 @@ export default {
         }
       }
     },
+
+    excluir() {
+      alert("ok");
+      for (var array = 0; array < this.retornoGetter.length; array++) {
+        if (this.idExclude == this.retornoGetter[array].id) {
+          this.MethodExcluir(array);
+          this.dialogExclude = false;
+        }
+      }
+    },
+
+    pesquisar() {
+      this.resultSearch = [];
+
+      for (var array = 0; array < this.retornoGetter.length; array++) {
+        if (
+          this.passworldSearch == this.retornoGetter[array].id ||
+          this.passworldSearch == this.retornoGetter[array].campoCadastro1 ||
+          this.passworldSearch == this.retornoGetter[array].campoCadastro2
+        ) {
+          this.clearSearch = 1;
+
+          var newObject = {
+            id: this.retornoGetter[array].id,
+            campo1: this.retornoGetter[array].campoCadastro1,
+            campo2: this.retornoGetter[array].campoCadastro2,
+          };
+
+          this.resultSearch.push(newObject);
+        }
+      }
+    },
   },
 };
 </script>
@@ -267,7 +337,13 @@ export default {
 .buttonCadastro {
   margin-top: 11px;
 }
-.buttonExclude{
+.buttonExclude {
   margin-left: 20px;
+}
+.body{
+margin:40px
+}
+.head{
+margin:40px
 }
 </style>

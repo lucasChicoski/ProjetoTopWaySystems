@@ -57,7 +57,7 @@ export default {
         this.$router.push("/cadastroNcm");
       } else if (index == 6) {
         this.$router.push("/cadastroaliquota");
-      } else if (index == 30) {
+      } else if (index == 7) {
         this.$router.push("/");
       }
     },

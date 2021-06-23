@@ -1,12 +1,13 @@
 <template>
   <v-app>
+   
     <div class="root">
       <div class="navbar">
         <app-navigation
           :itensNavigation="items"
           :functionNavigation="navigation"
-          :nomeUser="usuarios"
-          :emailUser="email"
+          :nomeUser="returnUser.Nome"
+          :emailUser="returnUser.Email"
         />
         <div class="showView">
           <app-rotina :indiceNumero="indiceNumero" />
@@ -14,14 +15,17 @@
           <app-cadastro
             :contentGrid="grid"
             nomeCadastro="NCM"
+            hintPesquisa="Você pode pesquisar por um id, Código ou Descrição"
             campoText1="Código"
             campoText2="Descrição"
             :camposStore="Ncm"
             :retornoGetter="returnNcm"
             :edithitID="hintIdEdit"
+            disableText2=0
             actions="cadastrarNCM"
             :MethodCadastro="cadastrarNcm"
             :MethodEditar="editaCadastroNcm"
+            :MethodExcluir="excluirNcm"
           />
         </div>
       </div>
@@ -45,14 +49,13 @@ export default {
     returnNcm() {
       return this.$store.getters.retornoVariavelNCM;
     },
-
-    Ncm() {
-      return this.$store.state.NCM;
-    },
+   returnUser(){
+     return this.$store.getters.userHeader
+   }
   },
 
   methods: {
-    ...mapActions(["cadastrarNCM", "editarNCM"]),
+    ...mapActions(["cadastrarNCM", "editarNCM","excluirNCM"]),
 
     cadastrarNcm(object) {
       this.cadastrarNCM(object);
@@ -60,6 +63,9 @@ export default {
     editaCadastroNcm(Obeject) {
       this.editarNCM(Obeject);
     },
+    excluirNcm(indice){
+      this.excluirNCM(indice)
+    }
   },
 };
 </script>

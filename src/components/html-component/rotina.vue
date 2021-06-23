@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="rotina">
     <div v-for="(rotinas, indexs) in rotina" :key="indexs" class="rotina">
       <h1 v-if="indexs == indiceNumero">{{ rotinas.rotina }}</h1>
     </div>
@@ -19,4 +19,8 @@ computed:{
 </script>
 
 <style>
+.rotina{
+margin-left: 20px;
+margin-top: 10px;
+}
 </style>
