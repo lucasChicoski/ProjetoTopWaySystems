@@ -31,9 +31,9 @@
           <table>
             <thead>
               <tr class="meio" v-for="nLines in contentGrid" :key="nLines">
-                <th>{{ nLines.id }}</th>
-                <th>{{ nLines.campo1 }}</th>
-                <th>{{ nLines.campo2 }}</th>
+                <th >{{ nLines.id }}</th>
+                <th >{{ nLines.campo1 }}</th>
+                <th >{{ nLines.campo2 }}</th>
               </tr>
             </thead>
             <tbody>
@@ -142,7 +142,6 @@
                           :hint="hintAliquota"
                           :label="campoText2"
                         ></v-text-field>
-                        
                       </v-col>
                     </v-row>
                   </v-container>
@@ -320,7 +319,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .head {
   margin-left: 4%;
 }
@@ -340,10 +339,10 @@ export default {
 .buttonExclude {
   margin-left: 20px;
 }
-.body{
-margin:40px
+.body {
+  margin: 40px;
 }
-.head{
-margin:40px
+.head {
+  margin: 40px;
 }
 </style>

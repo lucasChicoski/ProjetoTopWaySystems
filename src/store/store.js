@@ -34,20 +34,50 @@ export default new Vuex.Store({
             return state.usuario
         },
 
+
+
         //Getter NCM
         retornoVariavelNCM(state) {
             return state.NCM
         },
+        retornoArrayNCM(state) {
+            var array = [];
+
+            for (var cont = 0; cont < state.NCM.length; cont++) {
+                array.push(state.NCM[cont].campoCadastro1)
+            }
+
+            return array
+        },
+
 
         //Getter Categoria
         retornoVariavelCategoria(state) {
             return state.Categoria
         },
+        retornoArrayCategoria(state) {
+            var array = [];
+
+            for (var cont = 0; cont < state.Categoria.length; cont++) {
+                array.push(state.Categoria[cont].campoCadastro1)
+            }
+
+            return array
+        },
+
         //Getter Alíquota
         retornoVariavelAliquota(state) {
             return state.Aliquot
-        }
+        },
+        retornoArrayAliquota(state) {
+            var array = [];
 
+            for (var cont = 0; cont < state.Aliquot.length; cont++) {
+                array.push(state.Aliquot[cont].campoCadastro2)
+            }
+
+            return array
+        },
     },
     mutations: {
         //Mutation NCM
@@ -84,6 +114,29 @@ export default new Vuex.Store({
         },
         excluirAliquot(state, indice) {
             state.Aliquot.splice(state.Aliquot.indexOf(state.Aliquot[indice]), 1)
+        },
+
+        inserirProduto(state, objectInfo) {
+            state.produto.push(objectInfo)
+        },
+
+        editarProduto(state,objectInfo){
+            for(var array = 0; array < state.produto.length; array++){
+                if(objectInfo.idEditar == state.produto[array].id){
+                    var price = parseFloat(objectInfo.priceEdit);
+                    var aliquot = parseFloat(objectInfo.aliquotEdit);
+                    
+                    var precoTotal = (price * (aliquot / 100)) + price
+
+                    state.produto[array].productDescription = objectInfo.descriptionEdit;
+                    state.produto[array].productPrice = objectInfo.priceEdit;
+                    state.produto[array].productCategory = objectInfo.categoryEdit;
+                    state.produto[array].productNCM = objectInfo.ncmEdit;
+                    state.produto[array].productAliquot = objectInfo.aliquotEdit;
+                    state.produto[array].calculedProdutc = precoTotal;
+
+                }
+            }
         }
     },
     actions: {
@@ -120,6 +173,36 @@ export default new Vuex.Store({
         },
         excluirAliquot(context, indice) {
             context.commit('excluirAliquot', indice)
+        },
+
+        inserirProduto(context, objectInfo) {
+
+            var price = parseFloat(objectInfo.productPrice);
+            var aliquot = parseFloat(objectInfo.productAliquot)
+
+            var precoTotal = (price * (aliquot / 100)) + price
+
+            alert(objectInfo.productPrice)
+
+            var obeject = {
+                id: objectInfo.id,
+                productDescription: objectInfo.productDescription,
+                productPrice: objectInfo.productPrice,
+                productCategory: objectInfo.productCategory,
+                productNCM: objectInfo.productNCM,
+                productAliquot: objectInfo.productAliquot,
+                calculedProdutc: precoTotal
+            }
+
+            price = 0
+            aliquot = 0
+
+            context.commit('inserirProduto', obeject)
+
+        },
+        editarProduto(context, objectInfo){
+
+            context.commit("editarProduto",objectInfo)
         }
 
     }

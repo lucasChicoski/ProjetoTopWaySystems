@@ -71,7 +71,7 @@
                   {{ product.productAliquot + "%" }}
                 </td>
                 <td v-if="flagClearSearch == 0">
-                  {{ product.productEnteprise }}
+                  {{ "R$ " + product.calculedProdutc }}
                 </td>
               </tr>
               <!--Else da pesquisa-->
@@ -124,36 +124,28 @@
                           ></v-text-field>
                         </v-col>
 
-                        <v-col cols="12" sm="6" md="4">
-                          <v-text-field
-                            v-model="productCategory"
-                            label="Categoria*"
-                            persistent-hint
-                          ></v-text-field>
+                        <v-col class="d-flex" cols="12" sm="4">
+                          <v-select
+                            :items="categoria"
+                            v-model="selectedCategoria"
+                            label="Categoria"
+                          ></v-select>
                         </v-col>
 
-                        <v-col cols="12" sm="6" md="4">
-                          <v-text-field
-                            v-model="productNCM"
-                            label="NCM / Código*"
-                            persistent-hint
-                          ></v-text-field>
+                        <v-col class="d-flex" cols="12" sm="4">
+                          <v-select
+                            :items="NCM"
+                            v-model="selectedNCM"
+                            label="NCM"
+                          ></v-select>
                         </v-col>
 
-                        <v-col cols="12" sm="6" md="4">
-                          <v-text-field
-                            v-model="productAliquot"
-                            label="Alíquota %*"
-                            persistent-hint
-                          ></v-text-field>
-                        </v-col>
-
-                        <v-col cols="12" sm="6" md="4">
-                          <v-text-field
-                            v-model="productEnteprise"
-                            label="Empresa*"
-                            persistent-hint
-                          ></v-text-field>
+                        <v-col class="d-flex" cols="12" sm="4">
+                          <v-select
+                            :items="Aliquota"
+                            v-model="selectedAliquot"
+                            label="Aliquota"
+                          ></v-select>
                         </v-col>
                       </v-row>
                     </v-container>
@@ -263,39 +255,31 @@
                             ></v-text-field>
                           </v-col>
 
-                          <v-col cols="12" sm="6" md="4">
-                            <v-text-field
+                          <v-col class="d-flex" cols="12" sm="4">
+                            <v-select
+                              :items="categoria"
                               v-model="categoryEdit"
                               label="Categoria"
-                              hint="Nome completo"
-                              persistent-hint
-                            ></v-text-field>
+                            ></v-select>
                           </v-col>
 
-                          <v-col cols="12" sm="6" md="4">
-                            <v-text-field
+                          <v-col class="d-flex" cols="12" sm="4">
+                            <v-select
+                              :items="NCM"
                               v-model="ncmEdit"
-                              label="NCM / Código"
-                              hint="Logradouro"
-                              persistent-hint
-                            ></v-text-field>
+                              label="NCM"
+                            ></v-select>
                           </v-col>
 
-                          <v-col cols="12" sm="6" md="4">
-                            <v-text-field
+                          <v-col class="d-flex" cols="12" sm="4">
+                            <v-select
+                              :items="Aliquota"
                               v-model="aliquotEdit"
-                              label="Alíquota %"
-                              persistent-hint
-                            ></v-text-field>
+                              label="Aliquota"
+                            ></v-select>
                           </v-col>
 
-                          <v-col cols="12" sm="6" md="4">
-                            <v-text-field
-                              v-model="interpriseEdit"
-                              label="Empresa"
-                              persistent-hint
-                            ></v-text-field>
-                          </v-col>
+                         
                         </v-row>
                       </v-container>
                       <small>*Campos nescessários</small>
@@ -327,6 +311,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   data() {
     return {
@@ -340,6 +326,11 @@ export default {
       productAliquot: "",
       productEnteprise: "",
 
+      //Selected
+      selectedAliquot: "",
+      selectedNCM: "",
+      selectedCategoria: "",
+
       //--------------------Método Delete -----------------------------
       functionDelete: "",
 
@@ -352,11 +343,11 @@ export default {
           category: "Categoria",
           code: "NCM / Código",
           aliquot: "Alíquota",
-          enterprise: "Empresa",
+          enterprise: "Preço Calculado",
         },
       ],
       //--------------Itens do Menu--------------------------------------------------
-
+      //items: this.categoria,
       //--------------PESQUISA--------------------------------------------------
       textoPesquisa: "",
       flagClearSearch: 0,
@@ -380,6 +371,8 @@ export default {
   },
 
   methods: {
+    ...mapActions(["inserirProduto","editarProduto"]),
+
     navigation(index) {
       if (index == 0) {
         this.$router.push("/main");
@@ -399,13 +392,12 @@ export default {
         id: (this.count = this.count + 1),
         productDescription: this.productDescription,
         productPrice: this.productPrice,
-        productCategory: this.productCategory,
-        productNCM: this.productNCM,
-        productAliquot: this.productAliquot,
-        productEnteprise: this.productEnteprise,
+        productCategory: this.selectedCategoria,
+        productNCM: this.selectedNCM,
+        productAliquot: this.selectedAliquot,
       };
 
-      this.$store.state.produto.push(usuario);
+      this.inserirProduto(usuario);
       this.dialog = false;
 
       this.productDescription = "";
@@ -427,20 +419,36 @@ export default {
     },
 
     editar() {
-      for (var array = 0; array <= this.produto.length; array++) {
-        if (this.idEditar == this.produto[array].id) {
-          this.$store.state.produto[array].productDescription =
-            this.descriptionEdit;
-          this.$store.state.produto[array].productPrice = this.priceEdit;
-          this.$store.state.produto[array].productCategory = this.categoryEdit;
-          this.$store.state.produto[array].productNCM = this.ncmEdit;
-          this.$store.state.produto[array].productAliquot = this.aliquotEdit;
-          this.$store.state.produto[array].productEnteprise =
-            this.interpriseEdit;
 
-          this.dialogEditar = false;
-        }
+      var objeto = {
+          idEditar: this.idEditar,
+          descriptionEdit: this.descriptionEdit,
+          priceEdit: this.priceEdit,
+          categoryEdit: this.categoryEdit,
+          ncmEdit: this.ncmEdit,
+          aliquotEdit: this.aliquotEdit,
       }
+
+      this.editarProduto(objeto)
+      
+
+      this.dialogEditar = false;
+
+      // for (var array = 0; array <= this.produto.length; array++) {
+      //   if (this.idEditar == this.produto[array].id) {
+
+      //     this.$store.state.produto[array].productDescription =
+      //       this.descriptionEdit;
+      //     this.$store.state.produto[array].productPrice = this.priceEdit;
+      //     this.$store.state.produto[array].productCategory = this.categoryEdit;
+      //     this.$store.state.produto[array].productNCM = this.ncmEdit;
+      //     this.$store.state.produto[array].productAliquot = this.aliquotEdit;
+      //     this.$store.state.produto[array].productEnteprise =
+      //       this.interpriseEdit;
+
+      //     this.dialogEditar = false;
+      //   }
+      // }
     },
 
     pesquisar() {
@@ -485,11 +493,23 @@ export default {
     email() {
       return this.$store.state.usuario.Email;
     },
+    categoria() {
+      return this.$store.getters.retornoArrayCategoria;
+    },
+    NCM() {
+      return this.$store.getters.retornoArrayNCM;
+    },
+    Aliquota() {
+      return this.$store.getters.retornoArrayAliquota;
+    },
+    calculedPriec() {
+      return this.$store.getters.calculedPrice;
+    },
   },
 };
 </script>
 
-<style>
+<style scoped>
 #root {
   display: inline-flex;
 }

@@ -47,8 +47,7 @@
           <table>
             <thead>
               <tr class="meio" v-for="n in grid" :key="n">
-                <th>{{ n.id }}</th>
-                
+                <th>{{ n.id }}</th> 
                 <th>{{ n.cnpjcpf }}</th>
                 <th>{{ n.nome }}</th>
                 <th>{{ n.nomefantasia }}</th>
